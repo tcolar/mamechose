@@ -14,9 +14,19 @@
 (when scrolling past top, roll to bottom of list and vice versa)
 
 TODO:
- - rom validation
- - ScreenSaver -> just show snapshots (+ effects ??)
+ - scroll in the list -> start game
+ - scroll in list -> update meta / screenshot
+ - fast scrolling
+ - game list -> use color to show rom status
+ - store games played
  - [Config] - key mappings
+ - rom validation
+ - show by ....
+ - filters
+ - ScreenSaver -> just show snapshots (+ effects ??)
+ - add to list / hide game etc ...
+ - custom lists
+ - search
 
 
  
