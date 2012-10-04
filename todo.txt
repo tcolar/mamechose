@@ -14,12 +14,9 @@
 (when scrolling past top, roll to bottom of list and vice versa)
 
 TODO:
- - scroll in the list -> start game
- - scroll in list -> update meta / screenshot
+ - scroll the list up & down
  - fast scrolling
- - game list -> use color to show rom status
  - store games played
- - [Config] - key mappings
  - rom validation
  - show by ....
  - filters
