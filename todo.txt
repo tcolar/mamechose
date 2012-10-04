@@ -14,7 +14,6 @@
 (when scrolling past top, roll to bottom of list and vice versa)
 
 TODO:
- - scroll the list up & down
  - fast scrolling
  - store games played
  - rom validation

@@ -12,7 +12,8 @@ class ListBox : ContentBox
 {
   Rom[] roms := [,] {set {&roms = it ; curRomIndex = 0 }}
   
-  private Int curRomIndex := 0
+  private Int curRomIndex := 0 // current selected rom
+  private Int listTop := 0  // current first rom in the list
   
   Color hlBg := Color.makeArgb(255, 40, 80, 80) // highlighted background
   Color regular := Color.white
@@ -21,8 +22,13 @@ class ListBox : ContentBox
   Color imperfect := Color.makeArgb(255, 220, 130, 30) // orange
   Color preliminary := Color.makeArgb(255, 160, 20, 20) // red
   
+  private Int? fontSize
+  private Int? gap  
+  private Int? listSize
 
-  new make(|This| f) : super(f) {}
+  new make(|This| f) : super(f) 
+  {
+  }
 
   Rom? curRom()
   {
@@ -32,8 +38,19 @@ class ListBox : ContentBox
   Rom? moveDown()
   {
     curRomIndex++
+      if(curRomIndex >= listTop + listSize)
+    { 
+      //scroll down 
+      listTop++
+      }  
     if(curRomIndex >= roms.size)
-        curRomIndex = 0
+    {
+      // roll back to top  
+      listTop = 0
+      curRomIndex = 0  
+    }  
+    if(listTop >= roms.size)
+      listTop = 0
     repaint
     return curRom  
   }
@@ -41,17 +58,31 @@ class ListBox : ContentBox
   Rom? moveUp()
   {
     curRomIndex--
-    if(curRomIndex < 0)
-      curRomIndex = roms.size - 1  
+      if(curRomIndex < 0)
+    {
+      curRomIndex = roms.size - 1
+      listTop = roms.size - listSize  
+    }    
+    if(curRomIndex < listTop)
+    {  
+      listTop--
+      }  
+    if(listTop < 0)
+      listTop = 0
     repaint 
     return curRom 
   }
 
   override Void paintContents(Graphics g)
   {
+    if(fontSize == null)
+    {
+      fontSize = 22 * window.bounds.h / 1000 
+      gap = (fontSize * 1.6f).toInt
+      listSize = (size.h - (3 * gap)) / gap
+    }  
+    
     // scale the font so it looks about the same on an old CRT(low res but large pixels) as a new LCD
-    fontSize := 22 * window.bounds.h / 1000 
-    gap := (fontSize * 1.6f).toInt
     g.font = Font.fromStr("${fontSize}pt Arial Bold")
     
     g.clip(Rect(gap, gap, size.w - (gap * 2), size.h - (gap * 2)))
@@ -64,23 +95,28 @@ class ListBox : ContentBox
     y+=gap
     g.brush = regular
     
-    roms[0 .. 30].each |rom, index|
+    (0 ..< listSize).each |index|
     {
-      if(index == curRomIndex)
-      {  
-        g.brush = hlBg
-        g.fillRect(gap, y, size.w - (gap * 2) , gap)        
-      }
-      g.brush = regular
-      if(rom.installed != null && rom.installed == false)
-        g.brush = missing
-      else if(rom.status == "imperfect")
-        g.brush = imperfect
-      else if(rom.status == "preliminary")
-        g.brush = preliminary
+      idx := listTop + index
+      if(idx < roms.size)
+      {
+        rom := roms[idx]
+        if(idx == curRomIndex)
+        {  
+          g.brush = hlBg
+          g.fillRect(gap, y, size.w - (gap * 2) , gap)        
+        }
+        g.brush = regular
+        if(rom.installed != null && rom.installed == false)
+          g.brush = missing
+        else if(rom.status == "imperfect")
+          g.brush = imperfect
+        else if(rom.status == "preliminary")
+          g.brush = preliminary
         
-      g.drawText(rom.desc, gap, y)
-      y+= gap
+        g.drawText(rom.desc, gap, y)
+        y+= gap
+      }
     }
   }  
 }
