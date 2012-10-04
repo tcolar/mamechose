@@ -19,16 +19,16 @@ class NavBox : ContentBox
     g.font = Font.fromStr("${fontSize}pt Arial Bold")
     g.brush = Color.white
     
-    y:= 30 
-    g.drawText("By List", 30, y); y += gap// all, random, favs, mylist   
-    g.drawText("By Category", 30, y); y += gap
-    g.drawText("By Play status", 30, y); y += gap //played / not played
-    g.drawText("By NbPlayers", 30, y); y += gap
-    g.drawText("By Year", 30, y); y += gap
-    g.drawText("By Publisher", 30, y); y += gap * 2
-    g.drawText("Search", 30, y); y += gap * 2 // -> show "keyboard" ?
+    y:= gap 
+    g.drawText("By List", gap, y); y += gap// all, random, favs, mylist   
+    g.drawText("By Category", gap, y); y += gap
+    g.drawText("By Play status", gap, y); y += gap //played / not played
+    g.drawText("By NbPlayers", gap, y); y += gap
+    g.drawText("By Year", gap, y); y += gap
+    g.drawText("By Publisher", gap, y); y += gap * 2
+    g.drawText("Search", gap, y); y += gap * 2 // -> show "keyboard" ?
     
-    g.drawText("Filters", 30, y); y += gap 
+    g.drawText("Filters", gap, y); y += gap 
     /*
     - show "hidden" roms ?
     - show failed verification roms
