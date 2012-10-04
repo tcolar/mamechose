@@ -22,10 +22,13 @@ class MetaBox : ContentBox
     snapFolder = config.snapFolder 
   }
   
-  Void showRom(Rom rom)
+  Void showRom(Rom? rom)
   {
-    curRom = rom
-    repaint
+    if(rom != null)
+    {  
+        curRom = rom
+        repaint
+    }  
   }
   
   override Void paintContents(Graphics g)

@@ -8,14 +8,20 @@ using fwt
 **
 ** ListBox
 **
-class ListBox : ContentBox
+class ListBox : ContentBox, Scrollable
 {
-  Rom[] roms := [,] {set {&roms = it ; curRomIndex = 0 }}
+  Rom[] roms := [,] 
+  {
+    set 
+    {
+      &roms = it ; 
+      scrollItems = it.size 
+      scrollTop = 0
+      scrollIndex = 0
+    }
+  }
   
-  private Int curRomIndex := 0 // current selected rom
-  private Int listTop := 0  // current first rom in the list
-  
-  Color hlBg := Color.makeArgb(255, 40, 80, 80) // highlighted background
+  Color hlBg := Color.makeArgb(255, 80, 120, 120) // highlighted background
   Color regular := Color.white
   Color title := Color.yellow 
   Color missing := Color.makeArgb(255, 116, 116, 116) // gray
@@ -24,51 +30,31 @@ class ListBox : ContentBox
   
   private Int? fontSize
   private Int? gap  
-  private Int? listSize
+
+  override Int scrollIndex // current index
+  override Int scrollTop // current index of first showing item
+  override Int scrollSize // size of the scroll (where to wrap around)
+  override Int scrollItems // How many items total we have to scroll though
 
   new make(|This| f) : super(f) 
-  {
+  {    
   }
 
   Rom? curRom()
   {
-    return roms.size > curRomIndex ? roms[curRomIndex] : null
+    return scrollItems > scrollIndex ? roms[scrollIndex] : null
   }
 
   Rom? moveDown()
   {
-    curRomIndex++
-      if(curRomIndex >= listTop + listSize)
-    { 
-      //scroll down 
-      listTop++
-      }  
-    if(curRomIndex >= roms.size)
-    {
-      // roll back to top  
-      listTop = 0
-      curRomIndex = 0  
-    }  
-    if(listTop >= roms.size)
-      listTop = 0
+    scrollDown
     repaint
-    return curRom  
+    return curRom 
   }
   
   Rom? moveUp()
   {
-    curRomIndex--
-      if(curRomIndex < 0)
-    {
-      curRomIndex = roms.size - 1
-      listTop = roms.size - listSize  
-    }    
-    if(curRomIndex < listTop)
-    {  
-      listTop--
-      }  
-    if(listTop < 0)
-      listTop = 0
+    scrollUp
     repaint 
     return curRom 
   }
@@ -79,7 +65,7 @@ class ListBox : ContentBox
     {
       fontSize = 22 * window.bounds.h / 1000 
       gap = (fontSize * 1.6f).toInt
-      listSize = (size.h - (3 * gap)) / gap
+      scrollSize = (size.h - (3 * gap)) / gap
     }  
     
     // scale the font so it looks about the same on an old CRT(low res but large pixels) as a new LCD
@@ -90,18 +76,18 @@ class ListBox : ContentBox
     y := gap
     
     g.brush = title    
-    g.drawText("Number of roms in this list : $roms.size", gap, y)
+    g.drawText("Number of roms in this list : $scrollItems", gap, y)
             
     y+=gap
     g.brush = regular
     
-    (0 ..< listSize).each |index|
+    (0 ..< scrollSize).each |index|
     {
-      idx := listTop + index
-      if(idx < roms.size)
+      idx := scrollTop + index
+      if(idx < scrollItems)
       {
         rom := roms[idx]
-        if(idx == curRomIndex)
+        if(idx == scrollIndex)
         {  
           g.brush = hlBg
           g.fillRect(gap, y, size.w - (gap * 2) , gap)        
