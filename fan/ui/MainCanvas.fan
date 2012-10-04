@@ -16,6 +16,8 @@ class MainCanvas : Canvas
   ContentBox help
   
   Int? curRom
+  
+  Color bg := Color.black
     
   new make(Rom[] romList, Rect bounds)
   {
@@ -47,7 +49,7 @@ class MainCanvas : Canvas
   override Void onPaint(Graphics g)
   {
     g.antialias = true
-    g.brush = Color.black
+    g.brush = bg
     g.fillRect(0, 0, bounds.w, bounds.h)
   } 
   

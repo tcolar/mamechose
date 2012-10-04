@@ -10,6 +10,8 @@ using fwt
 **
 class NavBox : ContentBox
 {
+  Color text := Color.white
+  
   new make(|This| f) : super(f) {}
   
   override Void paintContents(Graphics g)
@@ -17,7 +19,7 @@ class NavBox : ContentBox
     fontSize := 22 * window.bounds.h / 1000
     gap := (fontSize * 1.6f).toInt
     g.font = Font.fromStr("${fontSize}pt Arial Bold")
-    g.brush = Color.white
+    g.brush = text
     
     y:= gap 
     g.drawText("By List", gap, y); y += gap// all, random, favs, mylist   
@@ -34,11 +36,15 @@ class NavBox : ContentBox
     - show failed verification roms
     - show unverified roms
     - show missing roms
-    - show incomplete status romss
+    - show incomplete status roms
     - show preliminary status roms
     - show unknown status roms
     - show Mature games (*mature*)
     - show Casino games -> sucks
+    - show Tabletop -> sucks
+    - show Multiplay ? -> sucks
+    - show clones ? -> useless
+    - show rythm/dancing ? -> sucks
     */
     
   }

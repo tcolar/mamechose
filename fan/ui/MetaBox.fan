@@ -14,6 +14,8 @@ class MetaBox : ContentBox
   
   private Rom? curRom
   
+  Color text := Color.white
+  
   new make(|This| f) : super(f) 
   {
     config := Service.find(Config#) as Config
@@ -33,7 +35,7 @@ class MetaBox : ContentBox
       fontSize := 22 * window.bounds.h / 1000 
       gap := (fontSize * 1.6f).toInt
       g.font = Font.fromStr("${fontSize}pt Arial Bold")
-      g.brush = Color.white
+      g.brush = text
     
       g.drawText(curRom.desc, gap, gap / 2)
     
@@ -59,7 +61,8 @@ class MetaBox : ContentBox
       
       g.drawText("Name: $curRom.name", x, y); y+=gap
       g.drawText("Status: $curRom.status", x, y); y+=gap
-      g.drawText("Publisher: $curRom.publisher", x, y); y+=gap
+      g.drawText("Cat.: $curRom.category", x, y); y+=gap
+      g.drawText("Pub.: $curRom.publisher", x, y); y+=gap
       g.drawText("Year: $curRom.year", x, y); y+=gap
       g.drawText("CloneOf: $curRom.cloneOf", x, y); y+=gap
       g.drawText("NbPlayers: $curRom.nbPlayers", x, y); y+=gap
