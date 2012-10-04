@@ -1,61 +1,3 @@
----------------------------------------------------------------
-Top Level      |       Flags   |     Game list                          
-               |               | 
-               |               |
--------------------------------|
-Metadata                       |
- + Screen shot                 |-------------------------------
-                               | help
----------------------------------------------------------------
-
-Button1: 
-
-[list - pick 1]
-- all
-- all random
-- favs
-- my list
-
-[Rom Status]
-X good
-X imperfect
-X preliminary
-X Unknown
-
-[Rom Flags]
-. show clones
-X Played
-X Not played
-. Hidden by user
-. Missing
-. Failed verification
-
-[Nb players]
-x 1
-x 2 
-x 2 one at a time
-... etc ...
-
-[Category] Button1: Toggle that entry Button2: Toggle all entries
-X cat1
-X cat2
-X cat3
-...
-
-[Years]  
-X 77
-X 78 
-...
-
-
-[Flags / options]
-- hide missing roms (not installed)
-- hide status "preliminary" roms
-- hide status "imperfect" roms
-- hide failed validation (sha/crc)
-- hide clones
-- hide for each category
-
 [CTRL help panel] : shows controls for current item (ie: button1: select button2:options)
   * Top level :
 	button1 -> options: [reorder, make default, create custom list, delete(custom list)]
@@ -71,23 +13,10 @@ X 78
         player 1 : start game
 (when scrolling past top, roll to bottom of list and vice versa)
 
-[Metadata]
-standard meta (name, description, rom size, year, nbPlayers, publisher, etc...)
-
-[ScreenSaver] -> just show snapshots (+ effects ??)
-
-[background job]
--> retrieve ratings
--> publish my ratings
-
-[Config]
-- roms path
-- snapshot path
-- workdir ? / db ?
--> regenerate rom list from list.xml (new mame version)
--> rescan roms that are present / missing
--> rerun rom validation
-
+TODO:
+ - rom validation
+ - ScreenSaver -> just show snapshots (+ effects ??)
+ - [Config] - key mappings
 
 
  
