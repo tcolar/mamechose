@@ -18,6 +18,9 @@ class NavBox : ContentBox
   {
     fontSize := 22 * window.bounds.h / 1000
     gap := (fontSize * 1.6f).toInt
+    
+    g.clip(Rect(gap, gap, size.w - (gap * 2), size.h - (gap * 2)))
+
     g.font = Font.fromStr("${fontSize}pt Arial Bold")
     g.brush = text
     

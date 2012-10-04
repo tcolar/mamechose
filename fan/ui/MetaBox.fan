@@ -34,6 +34,9 @@ class MetaBox : ContentBox
     {  
       fontSize := 22 * window.bounds.h / 1000 
       gap := (fontSize * 1.6f).toInt
+      
+      g.clip(Rect(gap, 0, size.w - (gap * 2), size.h))
+  
       g.font = Font.fromStr("${fontSize}pt Arial Bold")
       g.brush = text
     

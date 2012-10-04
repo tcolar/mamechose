@@ -54,6 +54,8 @@ class ListBox : ContentBox
     gap := (fontSize * 1.6f).toInt
     g.font = Font.fromStr("${fontSize}pt Arial Bold")
     
+    g.clip(Rect(gap, gap, size.w - (gap * 2), size.h - (gap * 2)))
+    
     y := gap
     
     g.brush = title    
