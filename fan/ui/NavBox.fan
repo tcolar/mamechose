@@ -26,6 +26,7 @@ class NavBox : ContentBox
     g.drawText("By NbPlayers", 30, y); y += gap
     g.drawText("By Year", 30, y); y += gap
     g.drawText("By Publisher", 30, y); y += gap * 2
+    g.drawText("Search", 30, y); y += gap * 2 // -> show "keyboard" ?
     
     g.drawText("Filters", 30, y); y += gap 
     /*
