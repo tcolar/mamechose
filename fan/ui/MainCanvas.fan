@@ -7,8 +7,6 @@ using fwt
 ** 
 class MainCanvas : Canvas
 {  
-  MameExec? me := Service.find(MameExec#) as MameExec
-          
   NavBox nav
   ContentBox flags
   ListBox list
@@ -18,6 +16,8 @@ class MainCanvas : Canvas
   Int? curRom
   
   Color bg := Color.black
+  
+  EventHandler evtHandler
     
   new make(Rom[] romList, Rect bounds)
   {
@@ -38,11 +38,7 @@ class MainCanvas : Canvas
     
     add(nav).add(flags).add(list).add(meta).add(help)
     
-    // This will monitor all key events across the board
-    onKeyDown.add |Event e| 
-    {
-      keyEvent(e)
-    }
+    evtHandler = EventHandler(this)
   }
 
   ** Paint this and children
@@ -58,26 +54,5 @@ class MainCanvas : Canvas
   {
     list.roms = roms
     meta.showRom(list.curRom)
-  }
-  
-  ** Handle key events (incl. joystick) across the board
-  Void keyEvent(Event e)
-  {
-      switch(e.key.toStr.lower)
-      {
-        case me.config.keyStart.lower:
-          rom := list.curRom  
-          if(me!=null && rom != null)
-            me.startGame(rom.name)
-        case me.config.keyQuit.lower:
-          window.close         
-        case me.config.keyLeft.lower:                 
-        case me.config.keyRight.lower:
-          echo("n/a")        
-        case me.config.keyUp.lower:
-          meta.showRom(list.moveUp)          
-        case me.config.keyDown.lower:
-          meta.showRom(list.moveDown)          
-      }    
-  } 
+  }  
 }
