@@ -2,6 +2,7 @@
 // History:
 //   Oct 2, 2012 tcolar Creation
 //
+using fwt
 
 **
 ** Config
@@ -16,6 +17,13 @@ const class Config : Service
   const File? mameExec
   const File? romFolder
   const File? snapFolder
+  
+  const Str keyUp := Key.up.toStr
+  const Str keyDown := Key.down.toStr 
+  const Str keyLeft := Key.left.toStr
+  const Str keyRight := Key.right.toStr 
+  const Str keyStart := Key.enter.toStr 
+  const Str keyQuit := Key.esc.toStr 
   
   new make(File f)
   {
@@ -35,13 +43,25 @@ const class Config : Service
       {
         parts := line.split('=')
         k := parts[0].trim
-        v := parts[1 .. -1].join.trim
+        v := parts[1 .. -1].join("=").trim
         if(k == "mame.executable")
           mameExec = File.os(v).normalize
         else if(k == "rom.folder")
           romFolder = File.os(v).normalize
         else if(k == "snap.folder")
           snapFolder = File.os(v).normalize
+        else if(k == "key.up")
+          keyUp = v
+        else if(k == "key.down")
+          keyDown = v
+        else if(k == "key.left")
+          keyLeft = v
+        else if(k == "key.right")
+          keyRight = v
+        else if(k == "key.quit")
+          keyQuit = v
+        else if(k == "key.start")
+          keyStart = v
       }        
     }
     

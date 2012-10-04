@@ -10,9 +10,10 @@ using concurrent
 const class MameExec : Service
 {
   const File mame
+  const Config config
   
   new make(Config config)
-  {
+  { this.config = config
     this.mame = config.mameExec
   }
   

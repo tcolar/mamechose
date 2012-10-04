@@ -11,8 +11,6 @@ using gfx
 **
 class MainWindow : Window
 {
-  MameExec? me := Service.find(MameExec#) as MameExec
-          
   new make(Rom[] roms) : super()
   {
     bounds := Desktop.bounds
@@ -23,25 +21,7 @@ class MainWindow : Window
     showTrim = false
     size = Size(bounds.w, bounds.h)
     
-    onKeyUp.add |Event e| 
-    {
-      keyEvent(e)
-    }
-    
     content = MainCanvas(roms, bounds)
-  }
-  
-  ** Handle key events (incl. joystick) across the board
-  Void keyEvent(Event e)
-  {
-      switch(e.key.toStr)
-      {
-        case Key.ctrl.toStr:
-          if(me!=null)
-            me.startGame("abcop")
-        case Key.esc.toStr:
-          window.close         
-      }    
-  }
+  }  
 }
 
