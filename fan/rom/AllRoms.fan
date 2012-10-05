@@ -34,27 +34,72 @@ class AllRoms
     return allRoms
   }
   
-  ** Lazy loaded map of unique categories in the rom list (with number of hits as value)
-  Str:Int getCategories()
+  ** Lazy loaded list of unique categories in the rom list
+  Str[] getCategories()
   {
     if(categories == null)
     {
-      categories = [:]
+      categories = [,]
       roms.each |rom|
       {
         addHit(categories, rom.category)
       }
+      categories = categories.sort |a, b -> Int| {a <=> b}
     } 
     return categories
   }
   
-  internal Void addHit([Str:Int]? map, Str key)
+  ** Lazy loaded list of unique NbPlayers categories in the rom list
+  Str[] getPlayers()
   {
-    if( ! map.containsKey(key))
-      map[key] = 1
-    else
-      map[key] = map[key] + 1        
+    if(players == null)
+    {
+      players = [,]
+      roms.each |rom|
+      {
+        addHit(players, rom.nbPlayers)
+      }
+      players = players.sort |a, b -> Int| {a <=> b}
+    } 
+    return players
   }
   
-  private [Str:Int]? categories
+  Str[] getPublishers()
+  {
+    if(publishers == null)
+    {
+      publishers = [,]
+      roms.each |rom|
+      {
+        addHit(publishers, rom.publisher)
+      }
+      publishers = publishers.sort |a, b -> Int| {a <=> b}
+    } 
+    return publishers
+  }
+
+  Str[] getYears()
+  {
+    if(years == null)
+    {
+      years = [,]
+      roms.each |rom|
+      {
+        addHit(years, rom.year)
+      }
+      years = years.sort |a, b -> Int| {a <=> b}
+    } 
+    return years
+  }
+  
+  internal Void addHit(Str[] list, Str item)
+  {
+    if( ! list.contains(item))
+      list.add(item); 
+  }
+  
+  private Str[]? categories
+  private Str[]? players
+  private Str[]? publishers
+  private Str[]? years
 }

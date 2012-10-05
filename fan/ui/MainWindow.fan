@@ -11,7 +11,7 @@ using gfx
 **
 class MainWindow : Window
 {
-  new make(Rom[] roms) : super()
+  new make(AllRoms allRoms) : super()
   {
     bounds := Desktop.bounds
     //bounds := Rect(0, 0, 350, 262) // testing low res like arcade montitor
@@ -21,7 +21,7 @@ class MainWindow : Window
     showTrim = false
     size = Size(bounds.w, bounds.h)
     
-    content = MainCanvas(roms, bounds)
+    content = MainCanvas(allRoms, bounds)
   }  
 }
 

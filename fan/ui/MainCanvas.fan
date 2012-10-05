@@ -7,7 +7,7 @@ using fwt
 ** 
 class MainCanvas : Canvas
 {
-  Rom[] allRoms
+  AllRoms allRoms
       
   NavBox nav
   ContextBox context
@@ -21,9 +21,10 @@ class MainCanvas : Canvas
   
   EventHandler evtHandler
     
-  new make(Rom[] allRoms, Rect bounds)
+  new make(AllRoms allRoms, Rect bounds)
   {
     this.allRoms = allRoms
+
     this.bounds = bounds
     
     doubleBuffered = true
@@ -37,7 +38,8 @@ class MainCanvas : Canvas
     meta = MetaBox{it.bounds = Rect(0, h60 + 1, w25 * 2 , bounds.h - h60 - 2)}
     help = ContentBox{it.bounds = Rect(w25 * 2 + 1, h80 + 1, bounds.w - w25 * 2 - 1 , bounds.h - h80 - 2)}
     
-    setRomList(allRoms)
+    setRomList(allRoms.roms.vals.sort |Rom a, Rom b -> Int| {a.desc.lower <=> b.desc.lower}   
+)
     
     add(nav).add(context).add(list).add(meta).add(help)
     
@@ -55,7 +57,7 @@ class MainCanvas : Canvas
   ** Set the current rom list
   Void setRomList(Rom[] roms)
   {
-    list.roms = roms
+    list.roms = roms    
     meta.showRom(list.curRom)
   }  
 }

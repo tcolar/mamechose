@@ -84,10 +84,7 @@ class Main : AbstractMain
     else
     {    
       echo(RomHelper.countInfo(romInfo.allRoms.roms))
-      roms := romInfo.allRoms?.roms?.vals ?: [,]
-      // sort alphabeticaly by description
-      roms.sort |Rom a, Rom b -> Int| {a.desc.lower <=> b.desc.lower}   
-      MainWindow(roms).open
+      MainWindow(romInfo.allRoms).open
     } 
     
     return 0 

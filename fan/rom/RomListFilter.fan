@@ -20,7 +20,7 @@ class RomListFilter
   
   ** Apply the filters to the given list
   ** and returns a NEW filtered list (leave inputList alone)
-  Rom[] filterList(Rom[] inputList)
+  Rom[] filterList(Rom[] inputList, Bool sort := true)
   {
     Rom[] roms := [,]
     inputList.each |rom|
@@ -28,7 +28,7 @@ class RomListFilter
       if(matchRom(rom))
         roms.add(rom)
     }
-    return roms
+    return roms.sort |Rom a, Rom b -> Int| {a.desc.lower <=> b.desc.lower}
   }
   
   ** Check if a rom matches the filter
@@ -93,6 +93,15 @@ class RomListFilter
       hideFlags.remove(flag)
     else
       hideFlags.add(flag)
+  }
+  
+  Void clearBys()
+  {
+    category = null
+    nbPlayers = null
+    played = null
+    publisher = null
+    year =null
   }
 }
 

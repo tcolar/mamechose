@@ -23,4 +23,14 @@ class RomHelper
     }
     return "Total roms: ${total}. Installed: $installed ($invalid invalid)"
   }
+  
+  static Rom[] randomRoms(Rom[] list, Int nbRoms := 20)
+  {
+    Rom[] roms := [,]
+    (0 ..< nbRoms).each
+    {
+      roms.add(list[Int.random(0 ..< list.size)])
+    }
+    return roms
+  }
 }

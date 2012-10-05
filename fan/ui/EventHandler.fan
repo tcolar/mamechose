@@ -19,6 +19,8 @@ class EventHandler
   {
     this.ui = canvas
     currentBox = ui.list
+    ui.context.byItems(ui.nav.lists.keys) |Str str| {ui.nav.lists[str].call(this)}
+    
     currentBox.onSelect(true)
     
     ui.onKeyDown.add |Event e| 
@@ -42,10 +44,10 @@ class EventHandler
     currentBox.onSelect(true)
   } 
   
-  ** Set a new list of roms as the active list
-  Void updateList(RomListFilter filter)
+  ** set the rom list with this fiter applied (if roms is not specified, use the full list as the base)
+  Void applyList(RomListFilter filter, Rom[] roms := ui.allRoms.roms.vals)
   {
-    ui.setRomList(filter.filterList(ui.allRoms))
+    ui.setRomList(filter.filterList(roms))
   }
   
   Void keyEvent(Event e)

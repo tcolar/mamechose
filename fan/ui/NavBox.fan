@@ -20,28 +20,27 @@ class NavBox : ContentBox, Scrollable
   override Int scrollSize := 0
   override Int scrollItems := 0
   
-  ListItem[] items := [,]
-  
   RomListFilter filters := RomListFilter()
   
+  Str:Func lists := [:] {ordered = true}
+  
   new make(|This| f) : super(f) 
-  {
-    items.add(ListItem("By List", by, |EventHandler evt| {echo("a")})) 
-    items.add(ListItem("By Category", by, |EventHandler evt| {})) 
-    items.add(ListItem("By Nb Players", by, |EventHandler evt| {})) 
-    items.add(ListItem("By Year", by, |EventHandler evt| {})) 
-    items.add(ListItem("By Publisher", by, |EventHandler evt| {}))
-
-    items.add(ListItem("Search (TODO)", search, |EventHandler evt| {}))
+  { 
+    lists["All"] = |EventHandler evt| {evt.applyList(filters)}
     
+    lists["Random 20"] =  |EventHandler evt| {
+      filtered := filters.filterList(evt.ui.allRoms.roms.vals, false)
+      evt.ui.setRomList(RomHelper.randomRoms(filtered))
+    }
+   
     FilterFlag.vals.each |flag|
     {
       items.add(ListItem("(*) $flag.desc", filter, |EventHandler evt| {
-        toggle(items[scrollIndex])
-        filters.toggle(flag)
-        evt.updateList(filters)
-        repaint
-      }))
+            toggle(items[scrollIndex])
+            filters.toggle(flag)
+            evt.applyList(filters, evt.ui.list.roms)
+            repaint
+          }))
     }
     
     scrollItems = items.size
@@ -90,6 +89,61 @@ class NavBox : ContentBox, Scrollable
       g.drawText(item.name, gap, y);         
     }
   }
+    
+  ListItem[] items := [    
+    ListItem("By List", by) |EventHandler evt| {
+          filters.clearBys
+          evt.changeBox
+          evt.ui.context.byItems(lists.keys) |Str selected| {
+            lists[selected]?.call(evt)  
+            evt.changeBox
+          }
+      }, 
+    
+    ListItem("By Category", by) |EventHandler evt| {
+          filters.clearBys
+          evt.changeBox
+          evt.ui.context.byItems(evt.ui.allRoms.getCategories) |Str selected| {
+            filters.category = selected
+            evt.applyList(filters)
+            evt.changeBox
+          }
+        }, 
+    
+    ListItem("By Nb Players", by) |EventHandler evt| {
+          filters.clearBys
+          evt.changeBox
+          evt.ui.context.byItems(evt.ui.allRoms.getPlayers) |Str selected| {
+            filters.nbPlayers = selected
+            evt.applyList(filters)
+            evt.changeBox
+          }
+        }, 
+    
+    ListItem("By Year", by) |EventHandler evt| {
+          filters.clearBys
+          evt.changeBox
+          evt.ui.context.byItems(evt.ui.allRoms.getYears) |Str selected| {
+            filters.year = selected
+            evt.applyList(filters)
+            evt.changeBox
+          }
+        }, 
+    
+    ListItem("By Publisher", by) |EventHandler evt| {
+          evt.changeBox
+          filters.clearBys
+          evt.ui.context.byItems(evt.ui.allRoms.getPublishers) |Str selected| {
+            filters.publisher = selected
+            evt.applyList(filters)
+            evt.changeBox
+          }
+        },
+
+    ListItem("Search (TODO)", search, |EventHandler evt| {})
+]
+  
+
 }
 
 class ListItem
@@ -98,10 +152,10 @@ class ListItem
   Func func
   Color color 
 
-  new make(Str name, Color color, Func func)
+  new make(Str name, Color color, |EventHandler| onSelect)
   {
     this.name = name
     this.color = color
-    this.func = func
+    this.func = onSelect
   }
 }
