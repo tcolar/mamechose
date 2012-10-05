@@ -63,8 +63,8 @@ class RomListFilter
         case FilterFlag.preliminary:
           if(rom.status.lower == "preliminary") 
           return true
-        case FilterFlag.incomplete:
-          if(rom.status.lower == "incomplete") 
+        case FilterFlag.imperfect:
+          if(rom.status.lower == "imperfect") 
           return true
         case FilterFlag.casino:
           if(rom.category.lower.startsWith("casino")) 
@@ -75,13 +75,24 @@ class RomListFilter
         case FilterFlag.electro:
           if(rom.category.lower.startsWith("electromechanical")) 
           return true
-        case FilterFlag.hidden:
-          echo("TODO: hidden list")          
+        case FilterFlag.mature:
+          if(rom.category.lower.contains("*mature*")) 
+          return true
+        //case FilterFlag.hidden:
+          //echo("TODO: hidden list")          
       }
       return null // keep going
     }
     
     return excluded != true  
+  }
+  
+  Void toggle(FilterFlag flag)
+  {
+    if(hideFlags.contains(flag))
+      hideFlags.remove(flag)
+    else
+      hideFlags.add(flag)
   }
 }
 
@@ -89,14 +100,14 @@ enum class FilterFlag
 {
   missing("Missing"),
   failedVerif("Failed verification"),
-  clones("Clones"),
   preliminary("Preliminary status"),
-  incomplete("Incomplete status"),
+  imperfect("Imperfect status"),
+  clones("Clones"),
   electro("Pinball roms"),
   tabletop("TableTop roms"),
   casino("Casino roms"),
   mature("Mature roms"),
-  hidden("Hidden list")
+  hidden("Hidden list (TODO)")
   
   private new make(Str desc) {this.desc = desc}
   

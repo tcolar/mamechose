@@ -70,10 +70,13 @@ class MetaBox : ContentBox
       g.drawText("Cat.: $curRom.category", x, y); y+=gap
       g.drawText("Pub.: $curRom.publisher", x, y); y+=gap
       g.drawText("Year: $curRom.year", x, y); y+=gap
-      g.drawText("CloneOf: $curRom.cloneOf", x, y); y+=gap
+      clone := curRom.cloneOf ?: "N/A"
+      g.drawText("CloneOf: $clone", x, y); y+=gap
       g.drawText("NbPlayers: $curRom.nbPlayers", x, y); y+=gap
-      g.drawText("Installed: $curRom.installed", x, y); y+=gap
-      g.drawText("Verified: $curRom.verified", x, y); y+=gap
+      installed := curRom.installed ?: "N/A"
+      g.drawText("Installed: $installed", x, y); y+=gap
+      verified := curRom.verified ?: "N/A"
+      g.drawText("Verified: $verified", x, y); y+=gap
     }
   }
 }

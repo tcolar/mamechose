@@ -14,7 +14,7 @@
 (when scrolling past top, roll to bottom of list and vice versa)
 
 TODO:
- - filters
+ - lists
  - contextual button help
  - store games played
  - show by ....

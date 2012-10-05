@@ -20,9 +20,31 @@ class NavBox : ContentBox, Scrollable
   override Int scrollSize := 0
   override Int scrollItems := 0
   
+  ListItem[] items := [,]
+  
+  RomListFilter filters := RomListFilter()
+  
   new make(|This| f) : super(f) 
   {
-     scrollItems = 6 + FilterFlag.vals.size
+    items.add(ListItem("By List", by, |EventHandler evt| {echo("a")})) 
+    items.add(ListItem("By Category", by, |EventHandler evt| {})) 
+    items.add(ListItem("By Nb Players", by, |EventHandler evt| {})) 
+    items.add(ListItem("By Year", by, |EventHandler evt| {})) 
+    items.add(ListItem("By Publisher", by, |EventHandler evt| {}))
+
+    items.add(ListItem("Search (TODO)", search, |EventHandler evt| {}))
+    
+    FilterFlag.vals.each |flag|
+    {
+      items.add(ListItem("(*) $flag.desc", filter, |EventHandler evt| {
+        toggle(items[scrollIndex])
+        filters.toggle(flag)
+        evt.updateList(filters)
+        repaint
+      }))
+    }
+    
+    scrollItems = items.size
   }
   
   override Void keyUp(EventHandler evt) {scroll(-1); repaint}
@@ -31,7 +53,19 @@ class NavBox : ContentBox, Scrollable
 
   override Void keyButton1(EventHandler evt) 
   {
-    // TODO: handle
+    items[scrollIndex].func.call(evt)
+  }
+  
+  Void toggle(ListItem item)
+  {
+    if(item.name.startsWith("(*)"))
+    {
+      item.name = "(-)" + item.name[3..-1]
+    }        
+    else if(item.name.startsWith("(-)"))
+    {
+      item.name = "(*)" + item.name[3..-1]      
+    }        
   }
   
   override Void paintContents(Graphics g)
@@ -47,20 +81,27 @@ class NavBox : ContentBox, Scrollable
     g.fillRect(gap, gap + scrollIndex * gap, size.w - (gap * 2) , gap)        
 
     g.font = Font.fromStr("${fontSize}pt Arial Bold")
-    g.brush = by
     
-    y:= gap 
-    g.drawText("By List", gap, y); y += gap// all, random, played, never played, favs, mylist   
-    g.drawText("By Category", gap, y); y += gap
-    g.drawText("By Nb Players", gap, y); y += gap
-    g.drawText("By Year", gap, y); y += gap
-    g.drawText("By Publisher", gap, y); y += gap * 2
-    //g.brush = search
-    //g.drawText("Search", gap, y); y += gap // -> show "keyboard" ?
-    g.brush = filter
-    FilterFlag.vals.each |filter|
+    y := 0
+    items.each |item|
     {
-      g.drawText("(*) $filter.desc", gap, y); y += gap
+      g.brush = item.color
+      y += gap 
+      g.drawText(item.name, gap, y);         
     }
+  }
+}
+
+class ListItem
+{
+  Str name
+  Func func
+  Color color 
+
+  new make(Str name, Color color, Func func)
+  {
+    this.name = name
+    this.color = color
+    this.func = func
   }
 }

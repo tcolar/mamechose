@@ -18,6 +18,7 @@ class ListBox : ContentBox, Scrollable
       scrollItems = it.size 
       scrollTop = 0
       scrollIndex = 0
+      repaint
     }
   }
   

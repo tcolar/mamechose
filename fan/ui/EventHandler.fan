@@ -42,6 +42,12 @@ class EventHandler
     currentBox.onSelect(true)
   } 
   
+  ** Set a new list of roms as the active list
+  Void updateList(RomListFilter filter)
+  {
+    ui.setRomList(filter.filterList(ui.allRoms))
+  }
+  
   Void keyEvent(Event e)
   {
       switch(e.key.toStr.lower)

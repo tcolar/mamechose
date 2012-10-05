@@ -6,7 +6,9 @@ using fwt
 ** This also handle all the eventing
 ** 
 class MainCanvas : Canvas
-{  
+{
+  Rom[] allRoms
+      
   NavBox nav
   ContextBox context
   ListBox list
@@ -19,8 +21,9 @@ class MainCanvas : Canvas
   
   EventHandler evtHandler
     
-  new make(Rom[] romList, Rect bounds)
+  new make(Rom[] allRoms, Rect bounds)
   {
+    this.allRoms = allRoms
     this.bounds = bounds
     
     doubleBuffered = true
@@ -34,7 +37,7 @@ class MainCanvas : Canvas
     meta = MetaBox{it.bounds = Rect(0, h60 + 1, w25 * 2 , bounds.h - h60 - 2)}
     help = ContentBox{it.bounds = Rect(w25 * 2 + 1, h80 + 1, bounds.w - w25 * 2 - 1 , bounds.h - h80 - 2)}
     
-    setRomList(romList)
+    setRomList(allRoms)
     
     add(nav).add(context).add(list).add(meta).add(help)
     
