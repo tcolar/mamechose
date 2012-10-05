@@ -12,10 +12,11 @@ using gfx
 class ContentBox : Canvas
 {
   Color fg := Color.makeArgb(255, 100, 255, 100)
+  Color fgOn := Color.yellow
   Color bg := Color.makeArgb(255, 40, 40, 40)
   Color titleBg := Color.makeArgb(255, 50, 50, 50)
   
-  Bool highlight
+  private Bool focused
   
   new make(|This| f) 
   {
@@ -36,10 +37,10 @@ class ContentBox : Canvas
     g.brush = bg
     g.fillRoundRect(spacing, spacing, size.w - (spacing * 2), size.h - (spacing * 2), arc, arc)
     g.brush = fg
-    if(highlight)
+    if(focused)
     {
       g.pen = Pen{width = 4}
-      g.brush = fg.lighter(.5f)
+      g.brush = fgOn
     } 
     else
     {
@@ -50,4 +51,13 @@ class ContentBox : Canvas
   }
   
   virtual Void paintContents(Graphics g){}
+  
+  ** Receive the event when this box is selected or de-selected 
+  virtual Void onSelect(Bool selected) {focused = selected ; repaint}
+  
+  virtual Void keyStart(EventHandler evt) {}
+  virtual Void keyButton1(EventHandler evt) {}
+  virtual Void keyButton2(EventHandler evt) {}
+  virtual Void keyUp(EventHandler evt) {}
+  virtual Void keyDown(EventHandler evt) {}
 }

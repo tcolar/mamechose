@@ -14,15 +14,17 @@
 (when scrolling past top, roll to bottom of list and vice versa)
 
 TODO:
- - fast scrolling
- - store games played
- - rom validation
- - show by ....
  - filters
+ - contextual button help
+ - store games played
+ - show by ....
+ - rom validation
  - ScreenSaver -> just show snapshots (+ effects ??)
- - add to list / hide game etc ...
+ - add to list / hide game etc ... (just rom name append to text file : mamechose-blah.list)
  - custom lists
  - search
+ - Main option (listmisiign etc...)
+
 
 
  

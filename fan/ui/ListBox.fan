@@ -30,33 +30,63 @@ class ListBox : ContentBox, Scrollable
   
   private Int? fontSize
   private Int? gap  
+  private Bool movingDown := true
 
   override Int scrollIndex // current index
   override Int scrollTop // current index of first showing item
   override Int scrollSize // size of the scroll (where to wrap around)
   override Int scrollItems // How many items total we have to scroll though
 
-  new make(|This| f) : super(f) 
-  {    
-  }
+  new make(|This| f) : super(f) {}
 
   Rom? curRom()
   {
     return scrollItems > scrollIndex ? roms[scrollIndex] : null
   }
 
-  Rom? moveDown()
+  override Void keyStart(EventHandler evt)
   {
-    scrollDown
+    if(evt.me!=null && curRom != null)
+      evt.me.startGame(curRom.name)
+  }
+
+  override Void keyUp(EventHandler evt)
+  {
+    evt.ui.meta.showRom(move(-1))  
+  }
+  
+  override Void keyDown(EventHandler evt)
+  {
+    evt.ui.meta.showRom(move)  
+  }
+  
+  override Void keyButton1(EventHandler evt)
+  {
+    evt.ui.meta.showRom(moveFast)  
+  }
+  
+  override Void keyButton2(EventHandler evt)
+  {
+    evt.ui.meta.showRom(moveFast(false))  
+  }
+
+  ** Scroll the list and repaint
+  Rom? move(Int by := 1)
+  {
+    scroll(by)
     repaint
     return curRom 
   }
   
-  Rom? moveUp()
+  ** Move by 5% of the list size (by can be negative)
+  Rom? moveFast(Bool forward := true)
   {
-    scrollUp
+    by := scrollItems / 20
+    if(! forward)
+      by = by.negate
+    scroll(by)
     repaint 
-    return curRom 
+    return curRom     
   }
 
   override Void paintContents(Graphics g)

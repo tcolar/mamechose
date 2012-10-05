@@ -75,15 +75,15 @@ class Main : AbstractMain
     
     if(listMissing)
     {
-      
+      // todo
     } 
     else if(listInvalid)
     {
-      
+      // todo
     }
     else
     {    
-      echo(RomHelper.countInfo(romInfo.allRoms.roms)) 
+      echo(RomHelper.countInfo(romInfo.allRoms.roms))
       roms := romInfo.allRoms?.roms?.vals ?: [,]
       // sort alphabeticaly by description
       roms.sort |Rom a, Rom b -> Int| {a.desc.lower <=> b.desc.lower}   

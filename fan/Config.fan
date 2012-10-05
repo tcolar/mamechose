@@ -22,8 +22,11 @@ const class Config : Service
   const Str keyDown := Key.down.toStr 
   const Str keyLeft := Key.left.toStr
   const Str keyRight := Key.right.toStr 
-  const Str keyStart := Key.enter.toStr 
+  const Str keyStart := Key.num1.toStr 
+  const Str keyCoin := Key.num5.toStr 
   const Str keyQuit := Key.esc.toStr 
+  const Str keyButton1 := Key.ctrl.toStr 
+  const Str keyButton2 := Key.alt.toStr 
   
   new make(File f)
   {
@@ -62,6 +65,12 @@ const class Config : Service
           keyQuit = v
         else if(k == "key.start")
           keyStart = v
+        else if(k == "key.button1")
+          keyButton1 = v
+        else if(k == "key.button2")
+          keyButton2 = v
+        else if(k == "key.coin")
+          keyCoin = v
       }        
     }
     

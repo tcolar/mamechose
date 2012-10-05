@@ -13,9 +13,13 @@ class EventHandler
   MameExec? me := Service.find(MameExec#) as MameExec
   MainCanvas ui
   
+  private ContentBox currentBox
+  
   new make(MainCanvas canvas)
   {
     this.ui = canvas
+    currentBox = ui.list
+    currentBox.onSelect(true)
     
     ui.onKeyDown.add |Event e| 
     {
@@ -23,23 +27,51 @@ class EventHandler
     }
   }
   
+  internal Void changeBox(Bool right := true)
+  {
+    currentBox.onSelect(false)
+    switch(currentBox.typeof)
+    {
+      case ListBox#:
+        currentBox = right ? currentBox : ui.context
+      case ContextBox#:
+        currentBox = right ? ui.list : ui.nav
+      case NavBox#:
+        currentBox = right ? ui.context : currentBox
+    }
+    currentBox.onSelect(true)
+  } 
+  
   Void keyEvent(Event e)
   {
       switch(e.key.toStr.lower)
       {
-        case me.config.keyStart.lower:
-          rom := ui.list.curRom  
-          if(me!=null && rom != null)
-            me.startGame(rom.name)
+        // Global buttons            
         case me.config.keyQuit.lower:
-          ui.window.close         
-        case me.config.keyLeft.lower:                 
+          ui.window.close   
+                  
         case me.config.keyRight.lower:
-          echo("n/a")        
+          changeBox(true) 
+            
+        case me.config.keyLeft.lower: 
+          changeBox(false)                  
+        
+        // Contextual buttons                                               
+        case me.config.keyStart.lower:
+        case Key.enter.toStr.lower:
+          currentBox.keyStart(this)
+                
         case me.config.keyUp.lower:
-          ui.meta.showRom(ui.list.moveUp)          
+          currentBox.keyUp(this)  
+                    
         case me.config.keyDown.lower:
-          ui.meta.showRom(ui.list.moveDown)          
+          currentBox.keyDown(this)  
+                     
+        case me.config.keyButton1.lower:
+          currentBox.keyButton1(this)  
+                      
+        case me.config.keyButton2.lower:
+          currentBox.keyButton2(this)  
       }    
   } 
 }

@@ -13,13 +13,20 @@ mixin Scrollable
   abstract Int scrollSize // size of the scroll (where to wrap around)
   abstract Int scrollItems // How many items total we have to scroll though
 
-  Int scrollDown()
+  ** scroll by offset : can be negative or positive
+  Int scroll(Int offset := 1)
   {
-    scrollIndex += 1
+    return (offset > 0) ? scrollDown(offset) : scrollUp(offset.negate)
+  }
+
+  ** scroll down the list
+  internal Int scrollDown(Int by)
+  {
+    scrollIndex += by
     if(scrollIndex >= scrollTop + scrollSize)
     { 
       //scroll down 
-      scrollTop += 1
+      scrollTop += by
     }  
     if(scrollIndex >= scrollItems)
     {
@@ -32,9 +39,9 @@ mixin Scrollable
     return scrollIndex
   }
   
-  Int scrollUp()
+  internal Int scrollUp(Int by)
   {
-    scrollIndex -= 1
+    scrollIndex -= by
     if(scrollIndex < 0)
     {
       // scroll to lits bottom
@@ -44,7 +51,7 @@ mixin Scrollable
     if(scrollIndex < scrollTop)
     {  
       // scroll down 1
-      scrollTop -= 1
+      scrollTop -= by
     }  
     if(scrollTop < 0)
       scrollTop = 0
