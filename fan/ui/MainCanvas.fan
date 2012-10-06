@@ -58,7 +58,7 @@ class MainCanvas : Canvas
 
   Void screenSaverOn(Bool on)
   {
-    if(on && ! screenSaver.visible == false)
+    if(on && screenSaver.visible == false)
     {
       screenSaver.visible = true
       screenSaverPaint

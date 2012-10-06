@@ -45,7 +45,7 @@ const class MameExec : Service
   {
     // TODO: append to gameplayed.txt if never played before ?
     echo("Starting game: $romName")
-    p := Process([mame.osPath, romName])
+    p := Process([mame.osPath, "-rp", config.romFolder.osPath, romName])
     p.run.join
   }
 }

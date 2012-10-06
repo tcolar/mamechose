@@ -45,7 +45,6 @@ class MetaBox : ContentBox
     
       g.drawText(curRom.desc, gap, gap / 2)
     
-      // TODO: Keep aspect ratio during resize
       imgMaxH := size.h - gap * 3
       imgMaxW := (size.w - gap * 2) / 2  
       img := RomHelper.getSnapshot(curRom)
@@ -55,12 +54,13 @@ class MetaBox : ContentBox
         ratio1 := imgMaxH / imgSize.h.toFloat
         ratio2 := imgMaxW / imgSize.w.toFloat
         ratio := ratio1 < ratio2 ? ratio1 : ratio2
-        img = img.resize(Size((imgSize.w * ratio).toInt, (imgSize.h * ratio).toInt))
-        x := gap + (imgMaxW - img.size.w) / 2 
-        y := gap * 2 + (imgMaxH - img.size.h) / 2
-        g.drawImage(img, x, y)
+        img2 := img.resize(Size((imgSize.w * ratio).toInt, (imgSize.h * ratio).toInt))
+        x := gap + (imgMaxW - img2.size.w) / 2 
+        y := gap * 2 + (imgMaxH - img2.size.h) / 2
+        g.drawImage(img2, x, y)
         
         img.dispose
+        img2.dispose
       }
       x := size.w /2 + gap / 2
       y := gap * 2

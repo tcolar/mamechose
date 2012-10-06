@@ -99,7 +99,7 @@ class EventHandler
       Desktop.callAsync |->| 
       {
         MainCanvas canvas := Actor.locals["mamechose.ui"]
-        if(DateTime.now > canvas.lastEvent + 3min)
+        if(DateTime.now > canvas.lastEvent + 1min)
         {      
           canvas.screenSaverOn(true) 
           canvas.screenSaverPaint        
