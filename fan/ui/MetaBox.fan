@@ -48,7 +48,7 @@ class MetaBox : ContentBox
       // TODO: Keep aspect ratio during resize
       imgMaxH := size.h - gap * 3
       imgMaxW := (size.w - gap * 2) / 2  
-      img := Image.makeFile(snapFolder.plus(`${curRom.name}.png`), false)
+      img := RomHelper.getSnapshot(curRom)
       if(img != null)
       {  
         imgSize := img.size

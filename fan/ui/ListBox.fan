@@ -10,6 +10,8 @@ using fwt
 **
 class ListBox : ContentBox, Scrollable
 {
+  Bool inGame := false
+  
   Rom[] roms := [,] 
   {
     set 
@@ -47,8 +49,16 @@ class ListBox : ContentBox, Scrollable
 
   override Void keyStart(EventHandler evt)
   {
-    if(evt.me!=null && curRom != null)
-      evt.me.startGame(curRom.name)
+    inGame = true
+    try
+    {  
+      if(evt.me!=null && curRom != null)
+        evt.me.startGame(curRom.name)
+    }
+    finally
+    {     
+      inGame = false
+    }  
   }
 
   override Void keyUp(EventHandler evt)

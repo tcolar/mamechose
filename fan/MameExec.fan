@@ -13,7 +13,8 @@ const class MameExec : Service
   const Config config
   
   new make(Config config)
-  { this.config = config
+  { 
+    this.config = config
     this.mame = config.mameExec
   }
   
@@ -45,6 +46,6 @@ const class MameExec : Service
     // TODO: append to gameplayed.txt if never played before ?
     echo("Starting game: $romName")
     p := Process([mame.osPath, romName])
-    p.run
+    p.run.join
   }
 }

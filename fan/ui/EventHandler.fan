@@ -3,7 +3,8 @@
 //   Oct 4, 2012 tcolar Creation
 //
 using fwt
-
+using concurrent
+ 
 **
 ** EventHandler
 ** Handles key events (incl. joystick) across the board
@@ -18,6 +19,7 @@ class EventHandler
   new make(MainCanvas canvas)
   {
     this.ui = canvas
+    
     currentBox = ui.list
     ui.context.byItems(ui.nav.lists.keys) |Str str| {ui.nav.lists[str].call(this)}
     
@@ -27,6 +29,9 @@ class EventHandler
     {
       keyEvent(e)
     }
+    
+    Actor.locals["mamechose.ui"] = ui 
+    screenSaver.send("start")
   }
   
   internal Void changeBox(Bool right := true)
@@ -52,34 +57,56 @@ class EventHandler
   
   Void keyEvent(Event e)
   {
-      switch(e.key.toStr.lower)
-      {
-        // Global buttons            
-        case me.config.keyQuit.lower:
-          ui.window.close   
+    switch(e.key.toStr.lower)
+    {
+      // Global buttons            
+      case me.config.keyQuit.lower:
+        ui.window.close   
                   
-        case me.config.keyRight.lower:
-          changeBox(true) 
+      case me.config.keyRight.lower:
+        changeBox(true) 
             
-        case me.config.keyLeft.lower: 
-          changeBox(false)                  
+      case me.config.keyLeft.lower: 
+        changeBox(false)                  
         
         // Contextual buttons                                               
-        case me.config.keyStart.lower:
-        case Key.enter.toStr.lower:
-          currentBox.keyStart(this)
+      case me.config.keyStart.lower:
+      case Key.enter.toStr.lower:
+        currentBox.keyStart(this)
                 
-        case me.config.keyUp.lower:
-          currentBox.keyUp(this)  
+      case me.config.keyUp.lower:
+        currentBox.keyUp(this)  
                     
-        case me.config.keyDown.lower:
-          currentBox.keyDown(this)  
+      case me.config.keyDown.lower:
+        currentBox.keyDown(this)  
                      
-        case me.config.keyButton1.lower:
-          currentBox.keyButton1(this)  
+      case me.config.keyButton1.lower:
+        currentBox.keyButton1(this)  
                       
-        case me.config.keyButton2.lower:
-          currentBox.keyButton2(this)  
-      }    
+      case me.config.keyButton2.lower:
+        currentBox.keyButton2(this)  
+    } 
+       
+    ui.lastEvent = DateTime.now
+    
+    ui.screenSaverOn(false)
+  }
+  
+  Actor screenSaver := Actor(ActorPool()) |msg -> Bool?|
+  {
+    while(true)
+    { 
+      Desktop.callAsync |->| 
+      {
+        MainCanvas canvas := Actor.locals["mamechose.ui"]
+        if(DateTime.now > canvas.lastEvent + 3min)
+        {      
+          canvas.screenSaverOn(true) 
+          canvas.screenSaverPaint        
+        }       
+      }      
+      Actor.sleep(5sec)
+    }                 
+    return null
   } 
 }

@@ -1,5 +1,10 @@
+//
+// History:
+//   Oct 4, 2012 tcolar Creation
+//
 using gfx
 using fwt
+using concurrent
 
 ** Main canvas that contains all the subpanels (box)
 ** 
@@ -20,13 +25,16 @@ class MainCanvas : Canvas
   Color bg := Color.black
   
   EventHandler evtHandler
-    
+  
+  private ScreenSaver screenSaver
+  
+  DateTime lastEvent := DateTime.now
+  
   new make(AllRoms allRoms, Rect bounds)
   {
     this.allRoms = allRoms
-
     this.bounds = bounds
-    
+        
     doubleBuffered = true
     
     w25 := (bounds.w * .25f).toInt
@@ -39,17 +47,38 @@ class MainCanvas : Canvas
     help = ContentBox{it.bounds = Rect(w25 * 2 + 1, h80 + 1, bounds.w - w25 * 2 - 1 , bounds.h - h80 - 2)}
     
     setRomList(allRoms.roms.vals.sort |Rom a, Rom b -> Int| {a.desc.lower <=> b.desc.lower}   
-)
+    )
     
-    add(nav).add(context).add(list).add(meta).add(help)
+    screenSaver = ScreenSaver(allRoms.roms.vals)
+
+    add(screenSaver).add(nav).add(context).add(list).add(meta).add(help)
     
-    evtHandler = EventHandler(this)
+    evtHandler = EventHandler(this)    
+  }
+
+  Void screenSaverOn(Bool on)
+  {
+    if(on && ! screenSaver.visible == false)
+    {
+      screenSaver.visible = true
+      screenSaverPaint
+    }
+    else if(!on && screenSaver.visible == true)
+    {
+      screenSaver.visible = false
+      repaint
+    }    
+  }
+  
+  ** Called every few seconds by screensaver thread to apint some more stuff
+  Void screenSaverPaint()
+  {
+    screenSaver.repaint
   }
 
   ** Paint this and children
   override Void onPaint(Graphics g)
   {
-    g.antialias = true
     g.brush = bg
     g.fillRect(0, 0, bounds.w, bounds.h)
   } 
@@ -59,5 +88,5 @@ class MainCanvas : Canvas
   {
     list.roms = roms    
     meta.showRom(list.curRom)
-  }  
+  }      
 }

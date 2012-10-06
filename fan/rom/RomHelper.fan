@@ -1,14 +1,16 @@
-
 //
 // History:
 //   Oct 2, 2012 tcolar Creation
 //
+using gfx
 
 **
 ** RomHelper
 **
 class RomHelper
 {
+  static const Config? config := Service.find(Config#) as Config
+
   static Str countInfo(Str:Rom roms)
   {
     Int total := roms.size
@@ -32,5 +34,10 @@ class RomHelper
       roms.add(list[Int.random(0 ..< list.size)])
     }
     return roms
+  }
+  
+  static Image? getSnapshot(Rom rom)
+  {
+    Image.makeFile(config.snapFolder.plus(`${rom.name}.png`), false)
   }
 }
