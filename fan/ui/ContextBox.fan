@@ -20,9 +20,7 @@ class ContextBox : ContentBox, Scrollable
   Str[] items := [,]
   |Str| selectCallback := |Str str| {}
   
-  new make(|This| f) : super(f) 
-  {    
-  }
+  new make(|This| f) : super(f) {}
   
   Void byItems(Str[] items, |Str| onSelect)
   {
@@ -34,11 +32,17 @@ class ContextBox : ContentBox, Scrollable
     repaint
   }
   
+  ** Apply the current selection (filter / refresh the list)
+  Void apply()
+  {
+    selectCallback.call(items[scrollIndex])
+  }
+
   override Void keyUp(EventHandler evt) {scroll(-1); repaint}
   
   override Void keyDown(EventHandler evt) {scroll; repaint}
 
-  override Void keyButton1(EventHandler evt) {selectCallback.call(items[scrollIndex])}
+  override Void keyButton1(EventHandler evt) {apply}
   
   override Void paintContents(Graphics g)
   {

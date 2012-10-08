@@ -28,6 +28,9 @@ const class Config : Service
   const Str keyButton1 := Key.ctrl.toStr 
   const Str keyButton2 := Key.alt.toStr 
   
+  const Str[] mameGlobalArgs := [,] 
+  const Str:Str[] mameRomArgs := [:] 
+  
   new make(File f)
   {
     if(! f.exists)
@@ -39,7 +42,8 @@ const class Config : Service
     romInfoFile = confFile.parent.plus(`mamechose-roms.json`)
     crcInfoFile = confFile.parent.plus(`mamechose-crc.json`)
     listXml = confFile.parent.plus(`mame-list.xml`)
-      
+    
+    Str:Str[] romArgs := [:]    
     confFile.readAllLines.each |line|
     {
       if( ! line.isEmpty && line[0] != '#' && line.contains("="))
@@ -71,8 +75,14 @@ const class Config : Service
           keyButton2 = v
         else if(k == "key.coin")
           keyCoin = v
+        else if( k == "mame.args.global")
+          mameGlobalArgs = v.split(' ')
+        else if( k.startsWith("mame.args.rom."))
+          romArgs[k[k.indexr(".")+1 .. -1]] = v.split(' ')
       }        
     }
+    echo(romArgs)
+    mameRomArgs = romArgs
     
     // validate
     if(mameExec==null || !mameExec.exists || mameExec.isDir)

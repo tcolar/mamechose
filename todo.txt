@@ -15,8 +15,8 @@
 
 TODO:
  - better screensaver
- - use windows.bound not desktop.bounds since unity don't honor fullscren
- - contextual button help
+ - global mame options : -effect aperture2x4rb
+ - contextual button help (and single game)
  - lists -> create / add to list / remove from list / hidden list
  - custom lists
  - save / restore filters status
@@ -26,6 +26,7 @@ TODO:
  - Main option (list missing etc...)
  - "password/pattern" protect filter change option (ie: so kids can't use mature stuff)
  - general lock/password of the app ?
+ - mame exec options per rom list ?
 
 
 

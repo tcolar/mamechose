@@ -49,7 +49,7 @@ class MainCanvas : Canvas
     setRomList(allRoms.roms.vals.sort |Rom a, Rom b -> Int| {a.desc.lower <=> b.desc.lower}   
     )
     
-    screenSaver = ScreenSaver(allRoms.roms.vals)
+    screenSaver = ScreenSaver(bounds, allRoms.roms.vals)
 
     add(screenSaver).add(nav).add(context).add(list).add(meta).add(help)
     

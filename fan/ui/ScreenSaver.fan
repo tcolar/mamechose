@@ -13,9 +13,9 @@ class ScreenSaver : Canvas
 {
   Rom[] roms
   
-  new make(Rom[] roms) : super()
+  new make(Rect bounds, Rom[] roms) : super()
   {
-    this.bounds = Desktop.bounds
+    this.bounds = bounds
     this.roms = roms
     visible = false
   }

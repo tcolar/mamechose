@@ -38,7 +38,8 @@ class NavBox : ContentBox, Scrollable
       items.add(ListItem("(*) $flag.desc", filter, |EventHandler evt| {
             toggle(items[scrollIndex])
             filters.toggle(flag)
-            evt.applyList(filters, evt.ui.list.roms)
+            evt.ui.context.apply // restart with the full selected list
+            evt.applyList(filters, evt.ui.list.roms) // and then filer
             repaint
           }))
     }

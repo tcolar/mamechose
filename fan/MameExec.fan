@@ -45,7 +45,12 @@ const class MameExec : Service
   {
     // TODO: append to gameplayed.txt if never played before ?
     echo("Starting game: $romName")
-    p := Process([mame.osPath, "-rp", config.romFolder.osPath, romName])
+    args := [mame.osPath, romName, "-rp", config.romFolder.osPath]
+    args.addAll(config.mameGlobalArgs)
+    if(config.mameRomArgs.containsKey(romName))
+      args.addAll(config.mameRomArgs[romName])
+    echo("Running: $args")
+    p := Process(args)
     p.run.join
   }
 }
