@@ -14,20 +14,19 @@
 (when scrolling past top, roll to bottom of list and vice versa)
 
 TODO:
- - better screensaver
- - global mame options : -effect aperture2x4rb
+ - triple click of exit button to quit
  - contextual button help (and single game)
+ - save / restore filters status upon game start / quitting (if any change)
  - lists -> create / add to list / remove from list / hidden list
- - custom lists
- - save / restore filters status
+ - custom lists (favs, etc...)
+ - mame exec options for custom list (ie: vertical game list, vector game list etc ....)
  - store games played (and add to lists: played / not played)
- - rom validation
  - search
- - Main option (list missing etc...)
+ - rom validation
+ - alternative layout for vertical screens
+ - better screensaver
  - "password/pattern" protect filter change option (ie: so kids can't use mature stuff)
  - general lock/password of the app ?
- - mame exec options per rom list ?
-
 
 
  

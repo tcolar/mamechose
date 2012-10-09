@@ -69,6 +69,9 @@ class RomListFilter
         case FilterFlag.casino:
           if(rom.category.lower.startsWith("casino")) 
           return true
+        case FilterFlag.fruit:
+          if(rom.category.lower.startsWith("fruit")) 
+          return true
         case FilterFlag.tabletop:
           if(rom.category.lower.startsWith("tabletop")) 
           return true
@@ -116,6 +119,7 @@ enum class FilterFlag
   tabletop("TableTop roms"),
   casino("Casino roms"),
   mature("Mature roms"),
+  fruit("Fruit machines"),
   hidden("Hidden list (TODO)")
   
   private new make(Str desc) {this.desc = desc}
