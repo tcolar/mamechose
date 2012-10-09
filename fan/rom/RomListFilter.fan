@@ -6,6 +6,7 @@
 **
 ** RomListFilter
 **
+@Serializable
 class RomListFilter
 {
   // List of flags we don't want to show'
@@ -105,6 +106,30 @@ class RomListFilter
     played = null
     publisher = null
     year =null
+  }
+  
+  static RomListFilter fromMo(Obj? mo)
+  {
+    filter := RomListFilter()
+    if(mo != null)
+    {
+      map := (Str:Obj?) mo
+      filter.category = map["category"] 
+      filter.nbPlayers = map["nbPlayers"] 
+      filter.played = map["played"] 
+      filter.publisher = map["publisher"] 
+      filter.year = map["year"]
+      hf := map["hideFlags"]
+      if(hf != null)
+      {
+        flags := (Str[]) hf
+        flags.each
+        {
+          filter.hideFlags.add(FilterFlag.fromStr(it))
+        }
+      }   
+    }  
+    return filter
   }
 }
 

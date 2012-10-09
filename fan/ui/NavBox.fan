@@ -13,6 +13,7 @@ class NavBox : ContentBox, Scrollable
   Color by := Color.yellow
   Color search := Color.makeArgb(255, 100, 100, 200)
   Color filter := Color.white
+  Color filterOff := Color.darkGray
   Color hlBg := Color.makeArgb(255, 80, 120, 120) // highlighted background
 
   override Int scrollIndex := 0
@@ -24,8 +25,15 @@ class NavBox : ContentBox, Scrollable
   
   Str:Func lists := [:] {ordered = true}
   
-  new make(|This| f) : super(f) 
+  Int fontSize
+  Int gap
+  
+  new make(Rect bounds, Int fontSize) : super(bounds) 
   { 
+    this.fontSize = fontSize
+    gap = (fontSize * 1.6f).toInt
+    scrollSize = (size.h - (2 * gap)) / gap
+      
     lists["All"] = |EventHandler evt| {evt.applyList(filters)}
     
     lists["Random 20"] =  |EventHandler evt| {
@@ -33,19 +41,18 @@ class NavBox : ContentBox, Scrollable
       evt.ui.setRomList(RomHelper.randomRoms(filtered))
     }
    
-    // NOTE: "items" is already filled in partially, see field definition
-    
+    // NOTE: "items" is already filled in partially, see field definition    
     FilterFlag.vals.each |flag|
     {
       items.add(ListItem("(*) $flag.desc", filter, |EventHandler evt| {
             toggle(items[scrollIndex])
             filters.toggle(flag)
             evt.ui.context.apply // restart with the full selected list
-            evt.applyList(filters, evt.ui.list.roms) // and then filer
+            evt.changeBox(false) // context.apply would have moved it right
+            evt.applyList(filters, evt.ui.list.roms) // and then filter again
             repaint
           }))
     }
-    echo(items.size)
     scrollItems = items.size
   }
   
@@ -56,6 +63,10 @@ class NavBox : ContentBox, Scrollable
   override Void keyButton1(EventHandler evt) 
   {
     items[scrollIndex].func.call(evt)
+    navName := items[scrollIndex].name
+    if( ! navName.startsWith("("))
+      evt.ui.state.updateNav(navName)
+    evt.ui.state.updateFilter(filters)
   }
   
   override Str[] getKeysHelp()
@@ -70,20 +81,17 @@ class NavBox : ContentBox, Scrollable
     if(item.name.startsWith("(*)"))
     {
       item.name = "(-)" + item.name[3..-1]
+      item.color = filterOff
     }        
     else if(item.name.startsWith("(-)"))
     {
       item.name = "(*)" + item.name[3..-1]      
+      item.color = filter
     }        
   }
   
   override Void paintContents(Graphics g)
   {
-    fontSize := 22 * window.bounds.h / 1000
-    gap := (fontSize * 1.6f).toInt
-    if(scrollSize == 0)
-      scrollSize = (size.h - (2 * gap)) / gap
-      
     g.clip(Rect(gap, gap, size.w - (gap * 2), size.h - (gap * 2)))
   
     g.font = Font.fromStr("${fontSize}pt Arial Bold")
@@ -177,3 +185,4 @@ class ListItem
     this.func = onSelect
   }
 }
+

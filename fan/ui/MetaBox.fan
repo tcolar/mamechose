@@ -16,28 +16,30 @@ class MetaBox : ContentBox
   
   Color text := Color.white
   
-  new make(|This| f) : super(f) 
+  Int fontSize
+  Int gap
+  
+  new make(Rect bounds, Int fontSize) : super(bounds) 
   {
     config := Service.find(Config#) as Config
     snapFolder = config.snapFolder 
+    this.fontSize = fontSize
+    gap = (fontSize * 1.6f).toInt
   }
   
   Void showRom(Rom? rom)
   {
     if(rom != null)
     {  
-        curRom = rom
-        repaint
+      curRom = rom
+      repaint
     }  
   }
   
   override Void paintContents(Graphics g)
   {
     if(curRom != null)
-    {  
-      fontSize := 22 * window.bounds.h / 1000 
-      gap := (fontSize * 1.6f).toInt
-      
+    {        
       g.clip(Rect(gap, 0, size.w - (gap * 2), size.h))
   
       g.font = Font.fromStr("${fontSize}pt Arial Bold")
@@ -54,13 +56,15 @@ class MetaBox : ContentBox
         ratio1 := imgMaxH / imgSize.h.toFloat
         ratio2 := imgMaxW / imgSize.w.toFloat
         ratio := ratio1 < ratio2 ? ratio1 : ratio2
-        img2 := img.resize(Size((imgSize.w * ratio).toInt, (imgSize.h * ratio).toInt))
-        x := gap + (imgMaxW - img2.size.w) / 2 
-        y := gap * 2 + (imgMaxH - img2.size.h) / 2
-        g.drawImage(img2, x, y)
-        
+        try
+        {  
+          img2 := img.resize(Size((imgSize.w * ratio).toInt, (imgSize.h * ratio).toInt))
+          x := gap + (imgMaxW - img2.size.w) / 2 
+          y := gap * 2 + (imgMaxH - img2.size.h) / 2
+          g.drawImage(img2, x, y)
+          img2.dispose
+        } catch(Err e) {} //  resize sometimes fails, not sure why
         img.dispose
-        img2.dispose
       }
       x := size.w /2 + gap / 2
       y := gap * 2

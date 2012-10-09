@@ -2,6 +2,7 @@
 // History:
 //   Oct 4, 2012 tcolar Creation
 //
+using fwt
 
 **
 ** Scrollable List helper
@@ -27,7 +28,7 @@ mixin Scrollable
     { 
       //scroll down 
       scrollTop += by
-    }  
+    }
     if(scrollIndex >= scrollItems)
     {
       // roll back to top  
@@ -36,6 +37,10 @@ mixin Scrollable
     }  
     if(scrollTop >= scrollItems)
       scrollTop = 0
+    if(scrollTop > scrollItems - scrollSize)
+      scrollTop = scrollItems - scrollSize
+    if(scrollTop < 0)
+      scrollTop = 0  
     return scrollIndex
   }
   

@@ -20,8 +20,10 @@ class MainWindow : Window
     resizable = false
     showTrim = false
     size = Size(bounds.w, bounds.h)
+
+    fontSize := 24 * bounds.w / 2000 
     
-    content = MainCanvas(allRoms, bounds)
+    content = MainCanvas(allRoms, bounds, fontSize)
   }  
 }
 

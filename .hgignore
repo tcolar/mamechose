@@ -1,3 +1,4 @@
 syntax: glob
 mame-list.xml
 mamechose-roms.json
+mamechose-state.json

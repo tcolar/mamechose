@@ -12,6 +12,7 @@ const class Config : Service
   const File confFile
   const File romInfoFile
   const File crcInfoFile
+  const File stateFile
   const File listXml
     
   const File? mameExec
@@ -41,6 +42,7 @@ const class Config : Service
     
     romInfoFile = confFile.parent.plus(`mamechose-roms.json`)
     crcInfoFile = confFile.parent.plus(`mamechose-crc.json`)
+    stateFile = confFile.parent.plus(`mamechose-state.json`)
     listXml = confFile.parent.plus(`mame-list.xml`)
     
     Str:Str[] romArgs := [:]    

@@ -23,6 +23,7 @@ class MainCanvas : Canvas
   Int? curRom
   
   Color bg := Color.black
+  Int fontSize
   
   EventHandler evtHandler
   
@@ -30,30 +31,35 @@ class MainCanvas : Canvas
   
   DateTime lastEvent := DateTime.now
   
-  new make(AllRoms allRoms, Rect bounds)
+  AppState state
+  
+  new make(AllRoms allRoms, Rect bounds, Int fontSize)
   {
     this.allRoms = allRoms
     this.bounds = bounds
+    this.fontSize = fontSize
         
     doubleBuffered = true
-    
     w25 := (bounds.w * .25f).toInt
     h60 := (bounds.h * .6f).toInt 
     h80 := (bounds.h * .8f).toInt
-    nav = NavBox{it.bounds = Rect(0, 0, w25, h60)}
-    context = ContextBox{it.bounds = Rect(w25 + 1, 0, w25, h60)}
-    list = ListBox{it.bounds = Rect(w25 * 2 + 2, 0, bounds.w - w25 * 2 + 1, h80)}
-    meta = MetaBox{it.bounds = Rect(0, h60 + 1, w25 * 2 , bounds.h - h60 - 2)}
-    help = HelpBox{it.bounds = Rect(w25 * 2 + 1, h80 + 1, bounds.w - w25 * 2 - 1 , bounds.h - h80 - 2)}
-    
-    setRomList(allRoms.roms.vals.sort |Rom a, Rom b -> Int| {a.desc.lower <=> b.desc.lower}   
-    )
-    
+    nav = NavBox(Rect(0, 0, w25, h60), fontSize)
+    context = ContextBox(Rect(w25 + 1, 0, w25, h60), fontSize)
+    list = ListBox(Rect(w25 * 2 + 2, 0, bounds.w - w25 * 2 + 1, h80), fontSize)
+    meta = MetaBox(Rect(0, h60 + 1, w25 * 2 , bounds.h - h60 - 2), fontSize)
+    help = HelpBox(Rect(w25 * 2 + 1, h80 + 1, bounds.w - w25 * 2 - 1 , bounds.h - h80 - 2), fontSize)
+        
     screenSaver = ScreenSaver(bounds, allRoms.roms.vals)
 
     add(screenSaver).add(nav).add(context).add(list).add(meta).add(help)
-    
+
     evtHandler = EventHandler(this)    
+
+    //context.byItems(nav.lists.keys) |Str str| {nav.lists[str].call(evtHandler)}    
+
+    // Restore state
+    state = AppState.load
+    state.restoreTo(this)
   }
 
   Void screenSaverOn(Bool on)

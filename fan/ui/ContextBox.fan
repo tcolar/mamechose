@@ -20,7 +20,15 @@ class ContextBox : ContentBox, Scrollable
   Str[] items := [,]
   |Str| selectCallback := |Str str| {}
   
-  new make(|This| f) : super(f) {}
+  Int fontSize
+  Int gap
+  
+  new make(Rect bounds, Int fontSize) : super(bounds) 
+  {
+    this.fontSize = fontSize
+    gap = (fontSize * 1.6f).toInt
+    scrollSize = (size.h - (2 * gap)) / gap
+  }
   
   Void byItems(Str[] items, |Str| onSelect)
   {
@@ -42,7 +50,11 @@ class ContextBox : ContentBox, Scrollable
   
   override Void keyDown(EventHandler evt) {scroll; repaint}
 
-  override Void keyButton1(EventHandler evt) {apply}
+  override Void keyButton1(EventHandler evt) 
+  {
+    apply
+    evt.ui.state.updateCtxSelection(items[scrollIndex])
+  }
   
   override Str[] getKeysHelp()
   {
@@ -53,11 +65,6 @@ class ContextBox : ContentBox, Scrollable
   
   override Void paintContents(Graphics g)
   {
-    fontSize := 22 * window.bounds.h / 1000
-    gap := (fontSize * 1.6f).toInt
-    if(scrollSize == 0)
-      scrollSize = (size.h - (2 * gap)) / gap
-      
     g.clip(Rect(gap, gap, size.w - (gap * 2), size.h - (gap * 2)))
   
     g.font = Font.fromStr("${fontSize}pt Arial Bold")

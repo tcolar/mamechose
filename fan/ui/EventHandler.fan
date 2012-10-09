@@ -22,8 +22,6 @@ class EventHandler
     this.ui = canvas
     
     currentBox = ui.list
-    ui.context.byItems(ui.nav.lists.keys) |Str str| {ui.nav.lists[str].call(this)}
-    
     changeBox(true)
     
     ui.onKeyDown.add |Event e| 
@@ -63,9 +61,12 @@ class EventHandler
     {
       // Global buttons            
       case me.config.keyQuit.lower:
-        quitCounter++
+        quitCounter += 1
         if(quitCounter==3)
-            ui.window.close   
+        {
+          ui.state.save
+          ui.window.close 
+      }    
                   
       case me.config.keyRight.lower:
         changeBox(true) 

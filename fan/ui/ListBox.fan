@@ -31,16 +31,22 @@ class ListBox : ContentBox, Scrollable
   Color imperfect := Color.makeArgb(255, 220, 130, 30) // orange
   Color preliminary := Color.makeArgb(255, 160, 20, 20) // red
   
-  private Int? fontSize
-  private Int? gap  
   private Bool movingDown := true
 
   override Int scrollIndex // current index
   override Int scrollTop // current index of first showing item
   override Int scrollSize // size of the scroll (where to wrap around)
   override Int scrollItems // How many items total we have to scroll though
-
-  new make(|This| f) : super(f) {}
+  
+  Int fontSize
+  Int gap 
+   
+  new make(Rect bounds, Int fontSize) : super(bounds) 
+  {
+    this.fontSize = fontSize
+    gap = (fontSize * 1.6f).toInt
+    scrollSize = (size.h - (3 * gap)) / gap
+  }
 
   Rom? curRom()
   {
@@ -53,7 +59,11 @@ class ListBox : ContentBox, Scrollable
     try
     {  
       if(evt.me!=null && curRom != null)
+      {  
         evt.me.startGame(curRom.name)
+        evt.ui.state.updateCurRom(curRom.name)
+        evt.ui.state.save
+      }
     }
     finally
     {     
@@ -110,13 +120,6 @@ class ListBox : ContentBox, Scrollable
 
   override Void paintContents(Graphics g)
   {
-    if(fontSize == null)
-    {
-      fontSize = 22 * window.bounds.h / 1000 
-      gap = (fontSize * 1.6f).toInt
-      scrollSize = (size.h - (3 * gap)) / gap
-    }  
-    
     // scale the font so it looks about the same on an old CRT(low res but large pixels) as a new LCD
     g.font = Font.fromStr("${fontSize}pt Arial Bold")
     

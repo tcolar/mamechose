@@ -18,15 +18,15 @@ class ContentBox : Canvas
   
   private Bool focused
   
-  new make(|This| f) 
+  new make(Rect bounds) 
   {
-    f(this)
+    this.bounds = bounds
     doubleBuffered = true
   }
   
   override Void onPaint(Graphics g)
   {
-    fontSize := 22 * window.bounds.h / 1000 
+    fontSize := 22 * bounds.h / 1000 
     spacing := (fontSize * 1.6f).toInt / 3
     Int arc := spacing * 4
     
