@@ -14,7 +14,6 @@
 (when scrolling past top, roll to bottom of list and vice versa)
 
 TODO:
- - contextual button help (and single game)
  - save / restore filters status upon game start / quitting (if any change)
  - lists -> create / add to list / remove from list / hidden list
  - custom lists (favs, etc...)

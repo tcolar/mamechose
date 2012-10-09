@@ -56,6 +56,13 @@ class NavBox : ContentBox, Scrollable
     items[scrollIndex].func.call(evt)
   }
   
+  override Str[] getKeysHelp()
+  {
+    ["Quit(x3): Quit MameChose",
+     "Start   : Start selected game",
+     "Button1 : Select / toggle item"]
+  }
+  
   Void toggle(ListItem item)
   {
     if(item.name.startsWith("(*)"))

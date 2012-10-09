@@ -55,6 +55,9 @@ class ContentBox : Canvas
   ** Receive the event when this box is selected or de-selected 
   virtual Void onSelect(Bool selected) {focused = selected ; repaint}
   
+  ** Contextual help for which buttons does what
+  virtual Str[] getKeysHelp() {[,]}
+  
   virtual Void keyStart(EventHandler evt) {}
   virtual Void keyButton1(EventHandler evt) {}
   virtual Void keyButton2(EventHandler evt) {}

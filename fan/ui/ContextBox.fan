@@ -44,6 +44,13 @@ class ContextBox : ContentBox, Scrollable
 
   override Void keyButton1(EventHandler evt) {apply}
   
+  override Str[] getKeysHelp()
+  {
+    ["Quit(x3): Quit MameChose",
+     "Start   : Start selected game",
+     "Button1 : Select item"]
+  }
+  
   override Void paintContents(Graphics g)
   {
     fontSize := 22 * window.bounds.h / 1000

@@ -81,6 +81,14 @@ class ListBox : ContentBox, Scrollable
     evt.ui.meta.showRom(moveFast(false))  
   }
 
+  override Str[] getKeysHelp()
+  {
+    ["Quit(x3): Quit MameChose",
+     "Start   : Start selected game",
+     "Button1 : Scroll Down 5%",
+     "Button2 : Scroll Up 5%"]
+  }
+
   ** Scroll the list and repaint
   Rom? move(Int by := 1)
   {
