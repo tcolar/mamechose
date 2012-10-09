@@ -15,6 +15,7 @@ class EventHandler
   MainCanvas ui
   
   private ContentBox currentBox
+  private Int quitCounter := 0
   
   new make(MainCanvas canvas)
   {
@@ -61,7 +62,9 @@ class EventHandler
     {
       // Global buttons            
       case me.config.keyQuit.lower:
-        ui.window.close   
+        quitCounter++
+        if(quitCounter==3)
+            ui.window.close   
                   
       case me.config.keyRight.lower:
         changeBox(true) 
@@ -86,7 +89,10 @@ class EventHandler
       case me.config.keyButton2.lower:
         currentBox.keyButton2(this)  
     } 
-       
+    
+    if(e.key.toStr.lower != me.config.keyQuit.lower)  
+      quitCounter = 0
+           
     ui.lastEvent = DateTime.now
     
     ui.screenSaverOn(false)
