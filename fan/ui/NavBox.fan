@@ -33,6 +33,8 @@ class NavBox : ContentBox, Scrollable
       evt.ui.setRomList(RomHelper.randomRoms(filtered))
     }
    
+    // NOTE: "items" is already filled in partially, see field definition
+    
     FilterFlag.vals.each |flag|
     {
       items.add(ListItem("(*) $flag.desc", filter, |EventHandler evt| {
@@ -43,7 +45,7 @@ class NavBox : ContentBox, Scrollable
             repaint
           }))
     }
-    
+    echo(items.size)
     scrollItems = items.size
   }
   
@@ -84,72 +86,80 @@ class NavBox : ContentBox, Scrollable
       
     g.clip(Rect(gap, gap, size.w - (gap * 2), size.h - (gap * 2)))
   
-    g.brush = hlBg
-    g.fillRect(gap, gap + scrollIndex * gap, size.w - (gap * 2) , gap)        
-
     g.font = Font.fromStr("${fontSize}pt Arial Bold")
     
-    y := 0
-    items.each |item|
+    y := gap
+    
+    (0 ..< scrollSize).each |index|
     {
-      g.brush = item.color
-      y += gap 
-      g.drawText(item.name, gap, y);         
+      idx := scrollTop + index
+      if(idx < scrollItems)
+      {
+        item := items[idx]
+        if(idx == scrollIndex)
+        {  
+          g.brush = hlBg
+          g.fillRect(gap, y, size.w - (gap * 2) , gap)        
+        }
+        g.brush = item.color
+        g.drawText(item.name, gap, y);                     
+        y += gap 
+      }
     }
   }
     
   ListItem[] items := [    
     ListItem("By List", by) |EventHandler evt| {
-          filters.clearBys
-          evt.changeBox
-          evt.ui.context.byItems(lists.keys) |Str selected| {
-            lists[selected]?.call(evt)  
-            evt.changeBox
-          }
-      }, 
+      filters.clearBys
+      evt.changeBox
+      evt.ui.context.byItems(lists.keys) |Str selected| {
+        lists[selected]?.call(evt)  
+        evt.changeBox
+      }
+    }, 
     
     ListItem("By Category", by) |EventHandler evt| {
-          filters.clearBys
-          evt.changeBox
-          evt.ui.context.byItems(evt.ui.allRoms.getCategories) |Str selected| {
-            filters.category = selected
-            evt.applyList(filters)
-            evt.changeBox
-          }
-        }, 
+      filters.clearBys
+      evt.changeBox
+      evt.ui.context.byItems(evt.ui.allRoms.getCategories) |Str selected| {
+        filters.category = selected
+        evt.applyList(filters)
+        evt.changeBox
+      }
+    }, 
     
     ListItem("By Nb Players", by) |EventHandler evt| {
-          filters.clearBys
-          evt.changeBox
-          evt.ui.context.byItems(evt.ui.allRoms.getPlayers) |Str selected| {
-            filters.nbPlayers = selected
-            evt.applyList(filters)
-            evt.changeBox
-          }
-        }, 
+      filters.clearBys
+      evt.changeBox
+      evt.ui.context.byItems(evt.ui.allRoms.getPlayers) |Str selected| {
+        filters.nbPlayers = selected
+        evt.applyList(filters)
+        evt.changeBox
+      }
+    }, 
     
     ListItem("By Year", by) |EventHandler evt| {
-          filters.clearBys
-          evt.changeBox
-          evt.ui.context.byItems(evt.ui.allRoms.getYears) |Str selected| {
-            filters.year = selected
-            evt.applyList(filters)
-            evt.changeBox
-          }
-        }, 
+      filters.clearBys
+      evt.changeBox
+      evt.ui.context.byItems(evt.ui.allRoms.getYears) |Str selected| {
+        filters.year = selected
+        evt.applyList(filters)
+        evt.changeBox
+      }
+    }, 
     
     ListItem("By Publisher", by) |EventHandler evt| {
-          evt.changeBox
-          filters.clearBys
-          evt.ui.context.byItems(evt.ui.allRoms.getPublishers) |Str selected| {
-            filters.publisher = selected
-            evt.applyList(filters)
-            evt.changeBox
-          }
-        },
+      evt.changeBox
+      filters.clearBys
+      evt.ui.context.byItems(evt.ui.allRoms.getPublishers) |Str selected| {
+        filters.publisher = selected
+        evt.applyList(filters)
+        evt.changeBox
+      }
+    },
 
     ListItem("Search (TODO)", search, |EventHandler evt| {})
-]
+  ]
   
 
 }
