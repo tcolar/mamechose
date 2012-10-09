@@ -71,8 +71,7 @@ class NavBox : ContentBox, Scrollable
   
   override Str[] getKeysHelp()
   {
-    ["Quit(x3): Quit MameChose",
-     "Start   : Start selected game",
+    ["Quit(x3): Quit MameChose","",
      "Button1 : Select / toggle item"]
   }
   
