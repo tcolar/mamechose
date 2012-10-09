@@ -81,7 +81,6 @@ const class Config : Service
           romArgs[k[k.indexr(".")+1 .. -1]] = v.split(' ')
       }        
     }
-    echo(romArgs)
     mameRomArgs = romArgs
     
     // validate

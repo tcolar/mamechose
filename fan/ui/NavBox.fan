@@ -11,7 +11,7 @@ using fwt
 class NavBox : ContentBox, Scrollable
 {
   Color by := Color.yellow
-  Color search := Color.blue
+  Color search := Color.makeArgb(255, 100, 100, 200)
   Color filter := Color.white
   Color hlBg := Color.makeArgb(255, 80, 120, 120) // highlighted background
 
