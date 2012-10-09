@@ -16,10 +16,9 @@ class MetaBox : ContentBox
   
   Color text := Color.white
   
-  Int fontSize
   Int gap
   
-  new make(Rect bounds, Int fontSize) : super(bounds) 
+  new make(Rect bounds, Int fontSize) : super(bounds, fontSize) 
   {
     config := Service.find(Config#) as Config
     snapFolder = config.snapFolder 

@@ -13,10 +13,9 @@ class HelpBox : ContentBox
   
   Str[] helpItems := [,]
   
-  Int fontSize
   Int gap
   
-  new make(Rect bounds, Int fontSize) : super(bounds) 
+  new make(Rect bounds, Int fontSize) : super(bounds, fontSize) 
   {
     this.fontSize = fontSize
     gap = (fontSize * 1.6f).toInt

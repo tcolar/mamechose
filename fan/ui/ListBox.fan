@@ -38,10 +38,9 @@ class ListBox : ContentBox, Scrollable
   override Int scrollSize // size of the scroll (where to wrap around)
   override Int scrollItems // How many items total we have to scroll though
   
-  Int fontSize
   Int gap 
    
-  new make(Rect bounds, Int fontSize) : super(bounds) 
+  new make(Rect bounds, Int fontSize) : super(bounds, fontSize) 
   {
     this.fontSize = fontSize
     gap = (fontSize * 1.6f).toInt

@@ -45,7 +45,7 @@ class MainCanvas : Canvas
     h80 := (bounds.h * .8f).toInt
     nav = NavBox(Rect(0, 0, w25, h60), fontSize)
     context = ContextBox(Rect(w25 + 1, 0, w25, h60), fontSize)
-    list = ListBox(Rect(w25 * 2 + 2, 0, bounds.w - w25 * 2 + 1, h80), fontSize)
+    list = ListBox(Rect(w25 * 2 + 2, 0, bounds.w - w25 * 2 - 2, h80), fontSize)
     meta = MetaBox(Rect(0, h60 + 1, w25 * 2 , bounds.h - h60 - 2), fontSize)
     help = HelpBox(Rect(w25 * 2 + 1, h80 + 1, bounds.w - w25 * 2 - 1 , bounds.h - h80 - 2), fontSize)
         

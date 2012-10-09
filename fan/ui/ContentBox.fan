@@ -17,16 +17,17 @@ class ContentBox : Canvas
   Color titleBg := Color.makeArgb(255, 50, 50, 50)
   
   private Bool focused
+  Int fontSize
   
-  new make(Rect bounds) 
+  new make(Rect bounds, Int fontSize) 
   {
     this.bounds = bounds
+    this.fontSize = fontSize
     doubleBuffered = true
   }
   
   override Void onPaint(Graphics g)
   {
-    fontSize := 22 * bounds.h / 1000 
     spacing := (fontSize * 1.6f).toInt / 3
     Int arc := spacing * 4
     
