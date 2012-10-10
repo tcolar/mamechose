@@ -46,7 +46,7 @@ class Main : AbstractMain
     Str mameVersion := mameExec.getVersion
     echo("Mame Version: $mameVersion")
     
-    romInfo := RomInfoBuilder(conf).load
+    romInfo := RomInfoBuilder().loadRoms
     
     if(generate)
     { 

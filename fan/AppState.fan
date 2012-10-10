@@ -1,9 +1,8 @@
-
 //
 // History:
 //   Oct 8, 2012 tcolar Creation
 //
-using util
+using netColarUtils
 
 **
 ** AppState
@@ -48,15 +47,7 @@ class AppState
     if(dirty)
     {
       config := Service.find(Config#) as Config       
-      out := JsonOutStream(config.stateFile.out)
-      try
-      {  
-        out.writeJson(this)
-      }  
-      finally
-      {  
-        out.close
-      }
+      JsonUtils.save(config.stateFile.out, this)    
     }        
     dirty = false    
   } 
@@ -64,42 +55,21 @@ class AppState
   static AppState load()
   { 
     config := Service.find(Config#) as Config       
-    state := AppState()
-    if(config.stateFile.exists)
-    {  
-      in := JsonInStream(config.stateFile.in)
-      Obj? obj
-      try
-      {  
-        obj = in.readJson
-      }  
-      finally 
-      {       
-        in.close
-      }  
-    
-      if(obj!=null)
-      {
-        map := (Map) obj
-        state.currentNav = map["currentNav"]
-        state.ctxSelection = map["ctxSelection"]
-        state.curRom = map["curRom"]
-        f := map["filter"]
-        state.filter = RomListFilter.fromMo(f)
-      } 
-    }
-    return state   
+    return JsonUtils.load(config.stateFile.in, AppState#) ?: AppState()  
   }
   
   Void restoreTo(MainCanvas ui)
   {
-    ui.nav.filters = filter
-    filter.hideFlags.each |flag|
-    {
-      ListItem? item := ui.nav.items.eachWhile |val, index| {return val.name.endsWith(flag.desc) ? val : null}
-      if(item != null)
-        ui.nav.toggle(item)
-    }
+    if(filter != null)
+    {  
+      ui.nav.filters = filter
+      filter.hideFlags.each |flag|
+      {
+        ListItem? item := ui.nav.items.eachWhile |val, index| {return val.name.endsWith(flag.desc) ? val : null}
+        if(item != null)
+          ui.nav.toggle(item)
+      }
+    } 
     si := ui.nav.items.eachWhile |item, index -> Obj?| {return item.name==currentNav ? index : null}  
     if(si != null)
     {  

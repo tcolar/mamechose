@@ -26,36 +26,7 @@ class Rom
   //Int timesPlayed := 0 -> separate file
   // rating -> separate file
   
-  new make(Str name) { this.name = name}
-  
-  static Rom? fromMo(Map? mo)
-  {
-    if(mo == null || ! mo.containsKey("name"))
-      return null
-    rom := Rom(mo["name"])
-    if(mo.containsKey("desc"))
-      rom.desc = mo["desc"]
-    if(mo.containsKey("year"))
-      rom.year = mo["year"]
-    if(mo.containsKey("publisher"))
-      rom.publisher = mo["publisher"]
-    if(mo.containsKey("status"))
-      rom.status = mo["status"]
-    if(mo.containsKey("nbPlayers"))
-      rom.nbPlayers = mo["nbPlayers"]
-    if(mo.containsKey("category"))
-      rom.category = mo["category"]
-    if(mo.containsKey("cloneOf"))
-      rom.cloneOf = mo["cloneOf"]
-    if(mo.containsKey("installed"))
-      rom.installed = mo["installed"]
-    if(mo.containsKey("verified"))
-      rom.verified = mo["verified"]
-    if(mo.containsKey("played"))
-      rom.played = mo["played"]
-      
-    return rom
-  }
+  new make(Str name := "") { this.name = name}
   
   override Str toStr()
   {

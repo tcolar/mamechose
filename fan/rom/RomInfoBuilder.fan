@@ -3,34 +3,29 @@
 //   Oct 1, 2012 tcolar Creation
 //
 using xml
-using util
+using netColarUtils
 
 **
 ** RomInfoBuilder
 ** Generate a list of all roms that mame support (from mame -listxml output)
+
+@Serializable
 class RomInfoBuilder
 {
-  Config config
+  Config config := Service.find(Config#)
   
   AllRoms? allRoms
   // TODO: crc
   
-  new make(Config config)
-  {
-    this.config = config
-  }
-  
   ** Load instance from the files
-  RomInfoBuilder load()
+  This loadRoms()
   {
     if(config.romInfoFile.exists)
     {
       in := config.romInfoFile.in
-      Map? map := JsonInStream(config.romInfoFile.in).readJson
-      in.close 
-      allRoms = AllRoms.fromMo(map)
-    } 
-    return this 
+      allRoms = JsonUtils.load(config.romInfoFile.in, AllRoms#)
+    }
+    return this  
   }
   
   ** Generate the full list of all the roms from mame list.xml
@@ -94,7 +89,7 @@ class RomInfoBuilder
     populateCategories
     populateInstalled
     
-    JsonOutStream(config.romInfoFile.out).writeJson(allRoms).close
+    JsonUtils.save(config.romInfoFile.out, allRoms)
     // TODO: romFolder.plus(`mamechose-crcs.txt`).writeObj(allRoms, ["overwrite":true])
   }
 
