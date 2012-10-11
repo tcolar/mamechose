@@ -21,9 +21,9 @@ class NavBox : ContentBox, Scrollable
   override Int scrollSize := 0
   override Int scrollItems := 0
   
-  RomListFilter filters := RomListFilter()
+  RomListFilter filters := RomListFilter {}
   
-  Str:Func lists := [:] {ordered = true}
+  ListManager listManager := ListManager()
   
   Int gap
   
@@ -32,14 +32,7 @@ class NavBox : ContentBox, Scrollable
     this.fontSize = fontSize
     gap = (fontSize * 1.6f).toInt
     scrollSize = (size.h - (2 * gap)) / gap
-      
-    lists["All"] = |EventHandler evt| {evt.applyList(filters)}
     
-    lists["Random 20"] =  |EventHandler evt| {
-      filtered := filters.filterList(evt.ui.allRoms.roms.vals, false)
-      evt.ui.setRomList(RomHelper.randomRoms(filtered))
-    }
-   
     // NOTE: "items" is already filled in partially, see field definition    
     FilterFlag.vals.each |flag|
     {
@@ -48,7 +41,7 @@ class NavBox : ContentBox, Scrollable
             filters.toggle(flag)
             evt.ui.context.apply // restart with the full selected list
             evt.changeBox(false) // context.apply would have moved it right
-            evt.applyList(filters, evt.ui.list.roms) // and then filter again
+            evt.applyBy(filters, evt.ui.list.roms) // and then filter again
             repaint
           }))
     }
@@ -118,8 +111,9 @@ class NavBox : ContentBox, Scrollable
     ListItem("By List", by) |EventHandler evt| {
       filters.clearBys
       evt.changeBox
-      evt.ui.context.byItems(lists.keys) |Str selected| {
-        lists[selected]?.call(evt)  
+      evt.ui.context.byItems(listManager.lists.keys) |Str selected| {
+        romList := listManager.lists[selected]?.filteredCopy(filters)  
+        evt.ui.setRomList(romList)
         evt.changeBox
       }
     }, 
@@ -127,9 +121,9 @@ class NavBox : ContentBox, Scrollable
     ListItem("By Category", by) |EventHandler evt| {
       filters.clearBys
       evt.changeBox
-      evt.ui.context.byItems(evt.ui.allRoms.getCategories) |Str selected| {
+      evt.ui.context.byItems(RomHelper.allRoms.getCategories) |Str selected| {
         filters.category = selected
-        evt.applyList(filters)
+        evt.applyBy(filters)
         evt.changeBox
       }
     }, 
@@ -137,9 +131,9 @@ class NavBox : ContentBox, Scrollable
     ListItem("By Nb Players", by) |EventHandler evt| {
       filters.clearBys
       evt.changeBox
-      evt.ui.context.byItems(evt.ui.allRoms.getPlayers) |Str selected| {
+      evt.ui.context.byItems(RomHelper.allRoms.getPlayers) |Str selected| {
         filters.nbPlayers = selected
-        evt.applyList(filters)
+        evt.applyBy(filters)
         evt.changeBox
       }
     }, 
@@ -147,9 +141,9 @@ class NavBox : ContentBox, Scrollable
     ListItem("By Year", by) |EventHandler evt| {
       filters.clearBys
       evt.changeBox
-      evt.ui.context.byItems(evt.ui.allRoms.getYears) |Str selected| {
+      evt.ui.context.byItems(RomHelper.allRoms.getYears) |Str selected| {
         filters.year = selected
-        evt.applyList(filters)
+        evt.applyBy(filters)
         evt.changeBox
       }
     }, 
@@ -157,9 +151,9 @@ class NavBox : ContentBox, Scrollable
     ListItem("By Publisher", by) |EventHandler evt| {
       evt.changeBox
       filters.clearBys
-      evt.ui.context.byItems(evt.ui.allRoms.getPublishers) |Str selected| {
+      evt.ui.context.byItems(RomHelper.allRoms.getPublishers) |Str selected| {
         filters.publisher = selected
-        evt.applyList(filters)
+        evt.applyBy(filters)
         evt.changeBox
       }
     },

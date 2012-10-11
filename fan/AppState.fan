@@ -18,6 +18,8 @@ class AppState
 
   private Bool dirty
 
+  new make(|This| f) {f(this)}
+
   Void updateFilter(RomListFilter filter)
   {
     dirty = true
@@ -55,7 +57,7 @@ class AppState
   static AppState load()
   { 
     config := Service.find(Config#) as Config       
-    return JsonUtils.load(config.stateFile.in, AppState#) ?: AppState()  
+    return JsonUtils.load(config.stateFile.in, AppState#) ?: AppState {}  
   }
   
   Void restoreTo(MainCanvas ui)
@@ -88,7 +90,7 @@ class AppState
         // Now the rom
         if(curRom != null)
         {  
-          rsi := ui.list.roms.eachWhile |rom, index -> Obj?| {return rom.name==curRom ? index : null} 
+          rsi := ui.list.roms.eachWhile |rom, index -> Obj?| {return rom==curRom ? index : null} 
           if(rsi!=null)
           {  
             ui.list.scrollDown(rsi)

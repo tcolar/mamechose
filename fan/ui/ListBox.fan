@@ -12,7 +12,7 @@ class ListBox : ContentBox, Scrollable
 {
   Bool inGame := false
   
-  Rom[] roms := [,] 
+  Str[] roms := [,] 
   {
     set 
     {
@@ -49,7 +49,10 @@ class ListBox : ContentBox, Scrollable
 
   Rom? curRom()
   {
-    return scrollItems > scrollIndex ? roms[scrollIndex] : null
+    if(scrollIndex<0) 
+      return null
+    name := scrollItems > scrollIndex ? roms[scrollIndex] : null
+    return name == null ? null : RomHelper.rom(name)
   }
 
   override Void keyStart(EventHandler evt)
@@ -59,9 +62,10 @@ class ListBox : ContentBox, Scrollable
     {  
       if(evt.me!=null && curRom != null)
       {  
-        evt.me.startGame(curRom.name)
         evt.ui.state.updateCurRom(curRom.name)
         evt.ui.state.save
+        evt.ui.nav.listManager.setPlayed(curRom.name)
+        evt.me.startGame(curRom.name)
       }
     }
     finally
@@ -137,7 +141,7 @@ class ListBox : ContentBox, Scrollable
       idx := scrollTop + index
       if(idx < scrollItems)
       {
-        rom := roms[idx]
+        rom := RomHelper.rom(roms[idx])
         if(idx == scrollIndex)
         {  
           g.brush = hlBg

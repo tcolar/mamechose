@@ -11,12 +11,11 @@ using fwt
 **
 class ScreenSaver : Canvas
 {
-  Rom[] roms
+  Str[] roms := RomHelper.allRoms.roms.keys
   
-  new make(Rect bounds, Rom[] roms) : super()
+  new make(Rect bounds) : super()
   {
     this.bounds = bounds
-    this.roms = roms
     visible = false
   }
   
@@ -24,7 +23,8 @@ class ScreenSaver : Canvas
   {
     if( ! roms.isEmpty)
     {  
-      rom := roms[Int.random(0 .. roms.size-1)]
+      romName := roms[Int.random(0 .. roms.size-1)]
+      rom := RomHelper.rom(romName)
       if(! rom.category.lower.contains("*mature*"))
       {
         img := RomHelper.getSnapshot(rom)  

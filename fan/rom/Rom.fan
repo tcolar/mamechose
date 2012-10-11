@@ -8,25 +8,21 @@
 ** Rom
 **
 @Serializable
-class Rom
+const class Rom
 {
-  Str name
-  Str desc := "Unknown"
-  Str year := "Unknown"
-  Str publisher := "Unknown"
-  Str status := "Unknown" // -> todo
-  Str nbPlayers := "Unknown" //-> todo
-  Str category := "Unknown" //-> todo
-  Str? cloneOf // null means not a clone
+  const Str name
+  const Str desc := "Unknown"
+  const Str year := "Unknown"
+  const Str publisher := "Unknown"
+  const Str status := "Unknown" // -> todo
+  const Str nbPlayers := "Unknown" //-> todo
+  const Str category := "Unknown" //-> todo
+  const Str? cloneOf // null means not a clone
   
-  Bool? installed // whether installed or not
-  Bool? verified // whether checked or not (crc/sha1))
-  Bool played //whether was played or not
+  const Bool? installed // whether installed or not
+  const Bool? verified // whether checked or not (crc/sha1))
   
-  //Int timesPlayed := 0 -> separate file
-  // rating -> separate file
-  
-  new make(Str name := "") { this.name = name}
+  new make(|This| f) { f(this) }
   
   override Str toStr()
   {

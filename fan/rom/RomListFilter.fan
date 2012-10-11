@@ -19,22 +19,27 @@ class RomListFilter
   Str? publisher
   Str? year
   
+  new make(|This| f) {f(this)}
+  
   ** Apply the filters to the given list
   ** and returns a NEW filtered list (leave inputList alone)
-  Rom[] filterList(Rom[] inputList, Bool sort := true)
+  Str[] filterList(Str[] inputList, Bool sort := true)
   {
-    Rom[] roms := [,]
+    Str[] roms := [,]
     inputList.each |rom|
     {
       if(matchRom(rom))
         roms.add(rom)
     }
-    return roms.sort |Rom a, Rom b -> Int| {a.desc.lower <=> b.desc.lower}
+    return roms.sort |a, b -> Int| {a.lower <=> b.lower}
   }
   
   ** Check if a rom matches the filter
-  Bool matchRom(Rom rom)
+  Bool matchRom(Str romName)
   {
+    rom := RomHelper.rom(romName)
+    if(rom == null)
+      return false // not there anymore ??
     // do the "by" filters
     if(category != null && rom.category != category)
       return false

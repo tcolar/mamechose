@@ -11,7 +11,7 @@ using gfx
 **
 class MainWindow : Window
 {
-  new make(AllRoms allRoms) : super()
+  new make() : super()
   {
     bounds := Desktop.bounds
     //bounds := Rect(0, 0, 350, 262) // testing low res like arcade montitor
@@ -23,7 +23,7 @@ class MainWindow : Window
 
     fontSize := 24 * bounds.w / 2000 
     
-    content = MainCanvas(allRoms, bounds, fontSize)
+    content = MainCanvas(bounds, fontSize)
   }  
 }
 

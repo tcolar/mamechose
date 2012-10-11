@@ -12,8 +12,6 @@ using concurrent
 ** 
 class MainCanvas : Canvas
 {
-  AllRoms allRoms
-      
   NavBox nav
   ContextBox context
   ListBox list
@@ -33,9 +31,8 @@ class MainCanvas : Canvas
   
   AppState state
   
-  new make(AllRoms allRoms, Rect bounds, Int fontSize)
+  new make(Rect bounds, Int fontSize)
   {
-    this.allRoms = allRoms
     this.bounds = bounds
     this.fontSize = fontSize
         
@@ -49,7 +46,7 @@ class MainCanvas : Canvas
     meta = MetaBox(Rect(0, h60 + 1, w25 * 2 , bounds.h - h60 - 2), fontSize)
     help = HelpBox(Rect(w25 * 2 + 1, h80 + 1, bounds.w - w25 * 2 - 1 , bounds.h - h80 - 2), fontSize)
         
-    screenSaver = ScreenSaver(bounds, allRoms.roms.vals)
+    screenSaver = ScreenSaver(bounds)
 
     add(screenSaver).add(nav).add(context).add(list).add(meta).add(help)
 
@@ -90,9 +87,9 @@ class MainCanvas : Canvas
   } 
   
   ** Set the current rom list
-  Void setRomList(Rom[] roms)
+  Void setRomList(Str[] romNames)
   {
-    list.roms = roms    
+    list.roms = romNames    
     meta.showRom(list.curRom)
   }      
 }

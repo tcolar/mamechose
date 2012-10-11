@@ -7,72 +7,70 @@
 ** All the roms that mame supports (from mame list.xml)
 **
 @Serializable
-class AllRoms
+const class AllRoms
 {
-  Str mameVersion   
+  const Str mameVersion   
   
-  Str:Rom roms := [:]
+  const Str:Rom roms
   
-  new make(Str mameVersion := "")
+  @Transient const Str[] categories
+  @Transient const Str[] players
+  @Transient const Str[] publishers
+  @Transient const Str[] years
+
+  new make(|This| f)
   {
-    this.mameVersion = mameVersion
+    f(this)
+    
+    categories = getCategories
+    players = getPlayers
+    publishers = getPublishers
+    years = getYears
   }
   
-  ** Lazy loaded list of unique categories in the rom list
-  Str[] getCategories()
+  **  unique categories in the rom list
+  internal Str[] getCategories()
   {
-    if(categories == null)
-    {
-      categories = [,]
+      categories := [,]
       roms.each |rom|
       {
         addHit(categories, rom.category)
       }
       categories = categories.sort |a, b -> Int| {a <=> b}
-    } 
-    return categories
+      return categories  
   }
   
-  ** Lazy loaded list of unique NbPlayers categories in the rom list
-  Str[] getPlayers()
+  **  unique NbPlayers categories in the rom list
+  internal Str[] getPlayers()
   {
-    if(players == null)
-    {
-      players = [,]
+      players := [,]
       roms.each |rom|
       {
         addHit(players, rom.nbPlayers)
       }
       players = players.sort |a, b -> Int| {a <=> b}
-    } 
     return players
   }
   
-  Str[] getPublishers()
+  internal Str[] getPublishers()
   {
-    if(publishers == null)
-    {
-      publishers = [,]
+      publishers := [,]
       roms.each |rom|
       {
         addHit(publishers, rom.publisher)
       }
       publishers = publishers.sort |a, b -> Int| {a <=> b}
-    } 
     return publishers
   }
 
-  Str[] getYears()
+  internal Str[] getYears()
   {
-    if(years == null)
-    {
-      years = [,]
+      years := [,]
       roms.each |rom|
       {
         addHit(years, rom.year)
       }
       years = years.sort |a, b -> Int| {a <=> b}
-    } 
     return years
   }
   
@@ -80,10 +78,5 @@ class AllRoms
   {
     if( ! list.contains(item))
       list.add(item); 
-  }
-  
-  private Str[]? categories
-  private Str[]? players
-  private Str[]? publishers
-  private Str[]? years
+  }  
 }

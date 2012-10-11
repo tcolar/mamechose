@@ -26,14 +26,21 @@ class RomHelper
     return "Total roms: ${total}. Installed: $installed ($invalid invalid)"
   }
   
-  static Rom[] randomRoms(Rom[] list, Int nbRoms := 20)
+  static File configFolder()
   {
-    Rom[] roms := [,]
-    (0 ..< nbRoms).each
-    {
-      roms.add(list[Int.random(0 ..< list.size)])
-    }
-    return roms
+    return config.confFile.parent
+  }
+  
+  static AllRoms allRoms()
+  {
+    RomInfoBuilder info := Service.find(RomInfoBuilder#)
+    return info.allRoms
+  }
+  
+  static Rom? rom(Str romName)
+  {
+    RomInfoBuilder info := Service.find(RomInfoBuilder#)
+    return info.allRoms.roms[romName]
   }
   
   static Image? getSnapshot(Rom rom)

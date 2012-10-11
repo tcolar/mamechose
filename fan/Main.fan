@@ -46,7 +46,8 @@ class Main : AbstractMain
     Str mameVersion := mameExec.getVersion
     echo("Mame Version: $mameVersion")
     
-    romInfo := RomInfoBuilder().loadRoms
+    romInfo := RomInfoBuilder()
+    romInfo.install
     
     if(generate)
     { 
@@ -84,7 +85,7 @@ class Main : AbstractMain
     else
     {    
       echo(RomHelper.countInfo(romInfo.allRoms.roms))
-      MainWindow(romInfo.allRoms).open
+      MainWindow().open
     } 
     
     return 0 
@@ -95,7 +96,11 @@ class Main : AbstractMain
     // create standard mame list.xml
     mameExec.listXml(conf.listXml)
     // parse it into our own format
-    romInfo.generateList(conf.listXml)
+    RomInfoBuilder.generateList(conf.listXml)
+    // Recreate and reinstall the service
+    romInfo.uninstall
+    romInfo = RomInfoBuilder()
+    romInfo.install
   }
   
   Void doValidate() 

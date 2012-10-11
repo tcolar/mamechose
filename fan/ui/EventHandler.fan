@@ -50,7 +50,7 @@ class EventHandler
   } 
   
   ** set the rom list with this fiter applied (if roms is not specified, use the full list as the base)
-  Void applyList(RomListFilter filter, Rom[] roms := ui.allRoms.roms.vals)
+  Void applyBy(RomListFilter filter, Str[] roms := RomHelper.allRoms.roms.keys)
   {
     ui.setRomList(filter.filterList(roms))
   }
