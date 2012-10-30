@@ -22,7 +22,7 @@ Go in the mamechose folder and run:
 
 # Screenshots:
 
-See Full screenshots Here: [https://bitbucket.org/tcolar/mamechose/tip/shots/](https://bitbucket.org/tcolar/mamechose/tip/shots/)
+See Full screenshots Here: [https://bitbucket.org/tcolar/mamechose/src/tip/shots/](https://bitbucket.org/tcolar/mamechose/tip/shots/)
 
-![Screenshot](https://bitbucket.org/tcolar/mamechose/raw/shots/categories.png)
+![Screenshot](https://bitbucket.org/tcolar/mamechose/raw/tip/shots/categories.png)
 
