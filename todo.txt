@@ -14,11 +14,11 @@
 (when scrolling past top, roll to bottom of list and vice versa)
 
 TODO:
- - lists -> create / use (from file)
- - custom lists (favs, etc...)
+ - lists : add to / remove from in interface
+ - support for "hidden" list (or remove it from filters)
+ - lists : create new from interface
  - mame exec options for custom list (ie: vertical game list, vector game list etc ....)
- - list : in UI:  new lits, add to list / remove from list / hidden list
- - store games played (and add to lists: played / not played)
+-> release
  - search
  - rom validation
  - alternative layout for vertical screens
