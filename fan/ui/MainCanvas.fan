@@ -7,9 +7,9 @@ using fwt
 using concurrent
 
 ** Main canvas that contains all the subpanels (box)
-** 
+**
 ** This also handle all the eventing
-** 
+**
 class MainCanvas : Canvas
 {
   NavBox nav
@@ -17,42 +17,42 @@ class MainCanvas : Canvas
   ListBox list
   MetaBox meta // + snapshot
   HelpBox help
-  
+
   Int? curRom
-  
+
   Color bg := Color.black
   Int fontSize
-  
+
   EventHandler evtHandler
-  
-  private ScreenSaver screenSaver
-  
+
+  private ScreenSaver2 screenSaver
+
   DateTime lastEvent := DateTime.now
-  
+
   AppState state
-  
+
   new make(Rect bounds, Int fontSize)
   {
     this.bounds = bounds
     this.fontSize = fontSize
-        
+
     doubleBuffered = true
     w25 := (bounds.w * .25f).toInt
-    h60 := (bounds.h * .6f).toInt 
+    h60 := (bounds.h * .6f).toInt
     h80 := (bounds.h * .8f).toInt
     nav = NavBox(Rect(0, 0, w25, h60), fontSize)
     context = ContextBox(Rect(w25 + 1, 0, w25, h60), fontSize)
     list = ListBox(Rect(w25 * 2 + 2, 0, bounds.w - w25 * 2 - 2, h80), fontSize)
     meta = MetaBox(Rect(0, h60 + 1, w25 * 2 , bounds.h - h60 - 2), fontSize)
     help = HelpBox(Rect(w25 * 2 + 1, h80 + 1, bounds.w - w25 * 2 - 1 , bounds.h - h80 - 2), fontSize)
-        
-    screenSaver = ScreenSaver(bounds)
+
+    screenSaver = ScreenSaver2(bounds, fontSize)
 
     add(screenSaver).add(nav).add(context).add(list).add(meta).add(help)
 
-    evtHandler = EventHandler(this)    
+    evtHandler = EventHandler(this)
 
-    //context.byItems(nav.lists.keys) |Str str| {nav.lists[str].call(evtHandler)}    
+    //context.byItems(nav.lists.keys) |Str str| {nav.lists[str].call(evtHandler)}
 
     // Restore state
     state = AppState.load
@@ -70,9 +70,9 @@ class MainCanvas : Canvas
     {
       screenSaver.visible = false
       repaint
-    }    
+    }
   }
-  
+
   ** Called every few seconds by screensaver thread to apint some more stuff
   Void screenSaverPaint()
   {
@@ -84,12 +84,12 @@ class MainCanvas : Canvas
   {
     g.brush = bg
     g.fillRect(0, 0, bounds.w, bounds.h)
-  } 
-  
+  }
+
   ** Set the current rom list
   Void setRomList(Str[] romNames)
   {
-    list.roms = romNames    
+    list.roms = romNames
     meta.showRom(list.curRom)
-  }      
+  }
 }

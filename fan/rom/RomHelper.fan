@@ -25,24 +25,29 @@ class RomHelper
     }
     return "Total roms: ${total}. Installed: $installed ($invalid invalid)"
   }
-  
+
   static File configFolder()
   {
     return config.confFile.parent
   }
-  
+
   static AllRoms allRoms()
   {
     RomInfoBuilder info := Service.find(RomInfoBuilder#)
     return info.allRoms
   }
-  
+
   static Rom? rom(Str romName)
   {
     RomInfoBuilder info := Service.find(RomInfoBuilder#)
     return info.allRoms.roms[romName]
   }
-  
+
+  static Bool hasSnapshot(Rom rom)
+  {
+    config.snapFolder.plus(`${rom.name}.png`).exists
+  }
+
   static Image? getSnapshot(Rom rom)
   {
     Image.makeFile(config.snapFolder.plus(`${rom.name}.png`), false)
